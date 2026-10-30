@@ -18,9 +18,8 @@ interface TicketsSearch {
 }
 
 export const Route = createFileRoute("/tickets/")({
-  validateSearch: (s: Record<string, unknown>): TicketsSearch => ({
-    ticket: typeof s.ticket === "string" ? s.ticket : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): TicketsSearch =>
+    typeof s["ticket"] === "string" ? { ticket: s["ticket"] } : {},
   head: () => ({
     meta: [
       { title: "Mis tickets · USM Denuncia" },

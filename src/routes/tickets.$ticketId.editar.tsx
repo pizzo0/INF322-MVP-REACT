@@ -82,7 +82,10 @@ function EditForm({ ticket }: { ticket: Ticket }) {
           if (!session) return;
           if (mode === "reabrir") {
             const next = reopenTicket(session, ticket.id, d);
-            if (!next) return toast.error("No fue posible reabrir el ticket.");
+            if (!next) {
+              toast.error("No fue posible reabrir el ticket.");
+              return;
+            }
             toast.success(`Ticket reabierto como ${next.code}`);
             navigate({ to: "/tickets", search: { ticket: next.id } });
             return;

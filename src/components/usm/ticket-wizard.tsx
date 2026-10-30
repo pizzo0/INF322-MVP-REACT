@@ -65,7 +65,7 @@ export function TicketWizard({
   const [index, setIndex] = useState(0);
   const [showErrors, setShowErrors] = useState(false);
   const errors = validateDraft(draft);
-  const step = steps[index];
+  const step: StepId = steps[index] ?? "resumen";
 
   const stepValid = (s: StepId) => STEP_ERRORS[s].every((k) => !errors[k]);
   const reachable = (i: number) => steps.slice(0, i).every(stepValid);
@@ -214,7 +214,7 @@ function Notice({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   );
 }
 
-function FieldError({ children }: { children?: string }) {
+function FieldError({ children }: { children?: string | undefined }) {
   if (!children) return null;
   return <p className="mt-1.5 text-xs font-medium text-destructive">{children}</p>;
 }
@@ -255,7 +255,7 @@ function OptionCard({
   );
 }
 
-function TypeStep({ value, error, onChange }: { value: TicketDraft["type"]; error?: string; onChange: (t: NonNullable<TicketDraft["type"]>) => void }) {
+function TypeStep({ value, error, onChange }: { value: TicketDraft["type"]; error?: string | undefined; onChange: (t: NonNullable<TicketDraft["type"]>) => void }) {
   return (
     <div role="radiogroup" aria-label="Tipo de problema">
       <p className="mb-5 text-sm text-muted-foreground">Selecciona la opción que mejor describe tu caso.</p>
@@ -279,7 +279,7 @@ function TypeStep({ value, error, onChange }: { value: TicketDraft["type"]; erro
   );
 }
 
-function CategoryStep({ draft, error, onChange }: { draft: TicketDraft; error?: string; onChange: (id: string) => void }) {
+function CategoryStep({ draft, error, onChange }: { draft: TicketDraft; error?: string | undefined; onChange: (id: string) => void }) {
   const [q, setQ] = useState("");
   const list = useMemo(() => {
     const all = categoriesFor(draft.type);
@@ -312,7 +312,7 @@ function CategoryStep({ draft, error, onChange }: { draft: TicketDraft; error?: 
   );
 }
 
-function LocationStep({ draft, error, onChange }: { draft: TicketDraft; error?: string; onChange: (d: TicketDraft) => void }) {
+function LocationStep({ draft, error, onChange }: { draft: TicketDraft; error?: string | undefined; onChange: (d: TicketDraft) => void }) {
   const set = (k: keyof TicketDraft["location"], v: string) => onChange({ ...draft, location: { ...draft.location, [k]: v } });
   return (
     <div className="space-y-5">
@@ -321,7 +321,7 @@ function LocationStep({ draft, error, onChange }: { draft: TicketDraft; error?: 
         <Label htmlFor="campus">
           Campus o sede <span className="text-destructive">*</span>
         </Label>
-        <Select value={draft.location.campus || undefined} onValueChange={(v) => set("campus", v)}>
+        <Select {...(draft.location.campus ? { value: draft.location.campus } : {})} onValueChange={(v) => set("campus", v)}>
           <SelectTrigger id="campus" className={cn("mt-1.5 h-11", error && "border-destructive")}>
             <span className="flex items-center gap-2">
               <MapPin className="size-4 text-muted-foreground" />

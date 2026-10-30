@@ -164,7 +164,7 @@ export function pickAssignee(t: Pick<Ticket, "categoryId" | "seq">): Contact {
   const team = getCategory(t.categoryId)?.team ?? "mesa";
   const pool = CONTACTS.filter((c) => c.team === team && !c.role.startsWith("Jefa") && !c.role.startsWith("Coordinadora"));
   const list = pool.length ? pool : CONTACTS;
-  return list[t.seq % list.length];
+  return list[t.seq % list.length] ?? CONTACTS[0]!;
 }
 
 /** Deterministic outcome: roughly one in four simulated tickets is rejected. */
