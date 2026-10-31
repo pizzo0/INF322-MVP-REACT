@@ -234,10 +234,6 @@ function ProfileMenu({ name, email }: { name: string; email: string }) {
           <span className="flex size-8 items-center justify-center rounded-full bg-secondary text-muted-foreground ring-1 ring-border">
             <UserRound className="size-4" />
           </span>
-          <span className="hidden flex-col text-left leading-tight sm:flex">
-            <span className="text-sm font-medium">{name}</span>
-            <span className="text-[11px] text-muted-foreground">{email}</span>
-          </span>
           <ChevronDown className="size-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </button>
       </DropdownMenuTrigger>
