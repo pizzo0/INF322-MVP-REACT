@@ -5,6 +5,8 @@ This project was built with [Lovable](https://lovable.dev).
 ## DEPENDENCIAS
 
 - [Docker](https://www.docker.com/)
+- npm o bun
+  - No es necesario, es mas que nada para ver el codigo sin errores instalando las dependencias
 
 ## URLs
 

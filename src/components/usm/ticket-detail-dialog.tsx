@@ -36,7 +36,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { ReopenedBadge, StatusBadge, statusDotVariants } from "@/components/usm/status-badge";
 import { getCategory } from "@/lib/usm/catalog";
 import { bytes, countdown, dateTime, initials, timeAgo, useNow } from "@/lib/usm/format";
-import { canCancel, canComment, canDelete, canReopen, editScope, nextMilestone, typeLabel } from "@/lib/usm/rules";
+import {
+  canCancel,
+  canComment,
+  canDelete,
+  canReopen,
+  editScope,
+  nextMilestone,
+  typeLabel,
+} from "@/lib/usm/rules";
 import { addComment, cancelTicket, deleteTicket, useSession, useTicket } from "@/lib/usm/store";
 import type { Ticket, TimelineKind } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
@@ -70,7 +78,15 @@ export function TicketDetailDialog({
   );
 }
 
-function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose: () => void; onOpenTicket: (id: string) => void }) {
+function DetailBody({
+  ticket,
+  onClose,
+  onOpenTicket,
+}: {
+  ticket: Ticket;
+  onClose: () => void;
+  onOpenTicket: (id: string) => void;
+}) {
   const now = useNow(1000);
   const category = getCategory(ticket.categoryId);
   const milestone = nextMilestone(ticket);
@@ -80,11 +96,15 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
     <>
       <div className="border-b bg-hero-gradient px-6 pb-5 pt-6 sm:px-8">
         <div className="flex flex-wrap items-center gap-2 pr-8">
-          <span className="rounded-md bg-card px-2 py-0.5 font-mono text-xs font-medium shadow-soft">{ticket.code}</span>
+          <span className="rounded-md bg-card px-2 py-0.5 font-mono text-xs font-medium shadow-soft">
+            {ticket.code}
+          </span>
           <StatusBadge status={ticket.status} />
           {ticket.reopenedFrom && <ReopenedBadge />}
         </div>
-        <DialogTitle className="mt-3 font-display text-2xl font-semibold leading-tight">{ticket.title}</DialogTitle>
+        <DialogTitle className="mt-3 font-display text-2xl font-semibold leading-tight">
+          {ticket.title}
+        </DialogTitle>
         <DialogDescription className="mt-1 text-sm">
           {typeLabel(ticket.type)} · {category?.name} · creado {timeAgo(ticket.createdAt)}
         </DialogDescription>
@@ -97,7 +117,9 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
                 ? "Tu ticket será asignado en un mínimo de 5 minutos. Mientras tanto, puedes editar todos sus datos."
                 : `${milestone.label}:`}
             </span>
-            <span className="ml-auto shrink-0 font-mono text-xs font-medium tabular">{countdown(milestone.at - now)}</span>
+            <span className="ml-auto shrink-0 font-mono text-xs font-medium tabular">
+              {countdown(milestone.at - now)}
+            </span>
           </div>
         )}
       </div>
@@ -109,23 +131,39 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
               <TabsTrigger value="resumen">Resumen</TabsTrigger>
               <TabsTrigger value="seguimiento">Seguimiento</TabsTrigger>
               <TabsTrigger value="comentarios">
-                Comentarios <span className="ml-1.5 text-xs text-muted-foreground tabular">{ticket.comments.length}</span>
+                Comentarios{" "}
+                <span className="ml-1.5 text-xs text-muted-foreground tabular">
+                  {ticket.comments.length}
+                </span>
               </TabsTrigger>
               <TabsTrigger value="historial">
-                Historial <span className="ml-1.5 text-xs text-muted-foreground tabular">{ticket.history.length}</span>
+                Historial{" "}
+                <span className="ml-1.5 text-xs text-muted-foreground tabular">
+                  {ticket.history.length}
+                </span>
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="resumen" className="space-y-6">
               {ticket.reopenedFrom && (
-                <LinkedTicket label="Reabierto a partir de" code={ticket.reopenedFrom.code} onClick={() => onOpenTicket(ticket.reopenedFrom!.id)} />
+                <LinkedTicket
+                  label="Reabierto a partir de"
+                  code={ticket.reopenedFrom.code}
+                  onClick={() => onOpenTicket(ticket.reopenedFrom!.id)}
+                />
               )}
               {ticket.reopenedAs && (
-                <LinkedTicket label="Este ticket fue reabierto como" code={ticket.reopenedAs.code} onClick={() => onOpenTicket(ticket.reopenedAs!.id)} />
+                <LinkedTicket
+                  label="Este ticket fue reabierto como"
+                  code={ticket.reopenedAs.code}
+                  onClick={() => onOpenTicket(ticket.reopenedAs!.id)}
+                />
               )}
               <section>
                 <SectionTitle>Descripción</SectionTitle>
-                <p className="whitespace-pre-line text-[15px] leading-relaxed text-foreground/90">{ticket.description}</p>
+                <p className="whitespace-pre-line text-[15px] leading-relaxed text-foreground/90">
+                  {ticket.description}
+                </p>
               </section>
               <section>
                 <SectionTitle>Archivos adjuntos</SectionTitle>
@@ -134,9 +172,16 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
                 ) : (
                   <ul className="grid gap-2 sm:grid-cols-2">
                     {ticket.attachments.map((a) => (
-                      <li key={a.id} className="flex items-center gap-3 rounded-lg border bg-card p-2">
+                      <li
+                        key={a.id}
+                        className="flex items-center gap-3 rounded-lg border bg-card p-2"
+                      >
                         {a.dataUrl ? (
-                          <img src={a.dataUrl} alt={a.name} className="size-10 rounded-md object-cover" />
+                          <img
+                            src={a.dataUrl}
+                            alt={a.name}
+                            className="size-10 rounded-md object-cover"
+                          />
                         ) : (
                           <span className="flex size-10 items-center justify-center rounded-md bg-muted">
                             <FileText className="size-4 text-muted-foreground" />
@@ -164,7 +209,10 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
 
             <TabsContent value="historial">
               {ticket.history.length === 0 ? (
-                <EmptyNote icon={<History className="size-4" />} text="No se han realizado modificaciones." />
+                <EmptyNote
+                  icon={<History className="size-4" />}
+                  text="No se han realizado modificaciones."
+                />
               ) : (
                 <ul className="space-y-3">
                   {ticket.history.map((h) => (
@@ -177,7 +225,9 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
                         <p className="line-clamp-3 rounded-md bg-status-rejected-soft/60 px-2 py-1 text-muted-foreground line-through decoration-status-rejected/40">
                           {h.from}
                         </p>
-                        <p className="line-clamp-3 rounded-md bg-status-resolved-soft/70 px-2 py-1">{h.to}</p>
+                        <p className="line-clamp-3 rounded-md bg-status-resolved-soft/70 px-2 py-1">
+                          {h.to}
+                        </p>
                       </div>
                     </li>
                   ))}
@@ -196,7 +246,9 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
                 </span>
                 <span className="min-w-0 leading-tight">
                   <span className="block truncate font-medium">{ticket.assignee.name}</span>
-                  <span className="block truncate text-xs text-muted-foreground">{ticket.assignee.role}</span>
+                  <span className="block truncate text-xs text-muted-foreground">
+                    {ticket.assignee.role}
+                  </span>
                 </span>
               </div>
             ) : (
@@ -227,22 +279,35 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
 
           <div className="space-y-2 border-t pt-5">
             {scope !== "ninguna" && (
-              <Link to="/tickets/$ticketId/editar" params={{ ticketId: ticket.id }} className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+              <Link
+                to="/tickets/$ticketId/editar"
+                params={{ ticketId: ticket.id }}
+                className={cn(buttonVariants({ variant: "outline" }), "w-full")}
+              >
                 <Pencil /> Editar ticket
               </Link>
             )}
             {scope === "limitada" && (
-              <p className="text-xs text-muted-foreground">Al estar asignado, solo puedes modificar título, descripción y archivos.</p>
+              <p className="text-xs text-muted-foreground">
+                Al estar asignado, solo puedes modificar título, descripción y archivos.
+              </p>
             )}
             {canReopen(ticket) && (
-              <Link to="/tickets/$ticketId/editar" params={{ ticketId: ticket.id }} className={cn(buttonVariants({ variant: "hero" }), "w-full")}>
+              <Link
+                to="/tickets/$ticketId/editar"
+                params={{ ticketId: ticket.id }}
+                className={cn(buttonVariants({ variant: "hero" }), "w-full")}
+              >
                 <RotateCcw /> Reabrir ticket
               </Link>
             )}
             {canDelete(ticket) && (
               <ConfirmAction
                 trigger={
-                  <Button variant="ghost" className="w-full text-destructive hover:bg-status-rejected-soft hover:text-destructive">
+                  <Button
+                    variant="ghost"
+                    className="w-full text-destructive hover:bg-status-rejected-soft hover:text-destructive"
+                  >
                     <Trash2 /> Eliminar ticket
                   </Button>
                 }
@@ -260,7 +325,10 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
             {canCancel(ticket) && (
               <ConfirmAction
                 trigger={
-                  <Button variant="ghost" className="w-full text-destructive hover:bg-status-rejected-soft hover:text-destructive">
+                  <Button
+                    variant="ghost"
+                    className="w-full text-destructive hover:bg-status-rejected-soft hover:text-destructive"
+                  >
                     <Ban /> Cancelar y cerrar
                   </Button>
                 }
@@ -281,7 +349,11 @@ function DetailBody({ ticket, onClose, onOpenTicket }: { ticket: Ticket; onClose
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h3 className="mb-2 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{children}</h3>;
+  return (
+    <h3 className="mb-2 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+      {children}
+    </h3>
+  );
 }
 
 function Meta({ label, children }: { label: string; children: React.ReactNode }) {
@@ -302,7 +374,15 @@ function EmptyNote({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
-function LinkedTicket({ label, code, onClick }: { label: string; code: string; onClick: () => void }) {
+function LinkedTicket({
+  label,
+  code,
+  onClick,
+}: {
+  label: string;
+  code: string;
+  onClick: () => void;
+}) {
   return (
     <button
       type="button"
@@ -326,14 +406,28 @@ function ResolutionBox({ ticket }: { ticket: Ticket }) {
         <div className="flex items-center gap-2 text-sm font-medium">
           <Ban className="size-4" /> Cancelado por el usuario
         </div>
-        <p className="mt-1 text-sm text-muted-foreground">Cerrado el {dateTime(ticket.closedAt!)}.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Cerrado el {dateTime(ticket.closedAt!)}.
+        </p>
       </section>
     );
   }
   const ok = r.outcome === "resuelta";
   return (
-    <section className={cn("rounded-xl border p-4", ok ? "border-status-resolved/25 bg-status-resolved-soft" : "border-status-rejected/25 bg-status-rejected-soft")}>
-      <div className={cn("flex items-center gap-2 text-sm font-semibold", ok ? "text-status-resolved" : "text-status-rejected")}>
+    <section
+      className={cn(
+        "rounded-xl border p-4",
+        ok
+          ? "border-status-resolved/25 bg-status-resolved-soft"
+          : "border-status-rejected/25 bg-status-rejected-soft",
+      )}
+    >
+      <div
+        className={cn(
+          "flex items-center gap-2 text-sm font-semibold",
+          ok ? "text-status-resolved" : "text-status-rejected",
+        )}
+      >
         {ok ? <CheckCircle2 className="size-4" /> : <XCircle className="size-4" />}
         {ok ? "Información de la resolución" : "Motivo del rechazo"}
       </div>
@@ -351,14 +445,17 @@ function Timeline({ ticket }: { ticket: Ticket }) {
   const pending: { kind: TimelineKind; label: string }[] = [];
   if (ticket.status !== "cerrada") {
     if (!kinds.has("asignada")) pending.push({ kind: "asignada", label: "Incidencia asignada" });
-    if (!kinds.has("resuelta") && !kinds.has("rechazada")) pending.push({ kind: "resuelta", label: "Resuelta o rechazada" });
+    if (!kinds.has("resuelta") && !kinds.has("rechazada"))
+      pending.push({ kind: "resuelta", label: "Resuelta o rechazada" });
     pending.push({ kind: "cerrada", label: "Cerrada" });
   }
   return (
     <ol className="relative ml-1">
       {done.map((e, i) => (
         <li key={e.id} className="relative flex gap-4 pb-6">
-          {(i < done.length - 1 || pending.length > 0) && <span className="absolute left-[4px] top-4 h-full w-px bg-border" />}
+          {(i < done.length - 1 || pending.length > 0) && (
+            <span className="absolute left-[4px] top-4 h-full w-px bg-border" />
+          )}
           <span className={cn(statusDotVariants({ kind: e.kind }), "relative mt-1.5 shrink-0")} />
           <div>
             <p className="text-sm font-medium">{KIND_LABEL[e.kind]}</p>
@@ -371,8 +468,12 @@ function Timeline({ ticket }: { ticket: Ticket }) {
       ))}
       {pending.map((p, i) => (
         <li key={p.label} className="relative flex gap-4 pb-6 last:pb-0">
-          {i < pending.length - 1 && <span className="absolute left-[4px] top-4 h-full w-px border-l border-dashed" />}
-          <span className={cn(statusDotVariants({ kind: "pendiente" }), "relative mt-1.5 shrink-0")} />
+          {i < pending.length - 1 && (
+            <span className="absolute left-[4px] top-4 h-full w-px border-l border-dashed" />
+          )}
+          <span
+            className={cn(statusDotVariants({ kind: "pendiente" }), "relative mt-1.5 shrink-0")}
+          />
           <p className="text-sm text-muted-foreground">{p.label}</p>
         </li>
       ))}
@@ -387,7 +488,10 @@ function Comments({ ticket }: { ticket: Ticket }) {
   return (
     <div className="space-y-4">
       {ticket.comments.length === 0 ? (
-        <EmptyNote icon={<MessageSquare className="size-4" />} text="Aún no hay comentarios ni actualizaciones." />
+        <EmptyNote
+          icon={<MessageSquare className="size-4" />}
+          text="Aún no hay comentarios ni actualizaciones."
+        />
       ) : (
         <ul className="space-y-3">
           {ticket.comments.map((c) => (
@@ -395,12 +499,19 @@ function Comments({ ticket }: { ticket: Ticket }) {
               <span
                 className={cn(
                   "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
-                  c.fromStaff ? "bg-accent text-accent-foreground" : "bg-secondary text-muted-foreground ring-1 ring-border",
+                  c.fromStaff
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-secondary text-muted-foreground ring-1 ring-border",
                 )}
               >
                 {c.fromStaff ? initials(c.author.name) : <UserRound className="size-4" />}
               </span>
-              <div className={cn("min-w-0 flex-1 rounded-xl border px-3.5 py-2.5", c.fromStaff ? "bg-card" : "bg-accent/40")}>
+              <div
+                className={cn(
+                  "min-w-0 flex-1 rounded-xl border px-3.5 py-2.5",
+                  c.fromStaff ? "bg-card" : "bg-accent/40",
+                )}
+              >
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <span className="text-sm font-medium">{c.author.name}</span>
                   {c.fromStaff && <span className="text-xs text-primary">Responsable</span>}
@@ -435,7 +546,9 @@ function Comments({ ticket }: { ticket: Ticket }) {
           </div>
         </form>
       ) : (
-        <p className="text-xs text-muted-foreground">Los tickets cerrados no admiten nuevos comentarios.</p>
+        <p className="text-xs text-muted-foreground">
+          Los tickets cerrados no admiten nuevos comentarios.
+        </p>
       )}
     </div>
   );
@@ -464,7 +577,10 @@ function ConfirmAction({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Volver</AlertDialogCancel>
-          <AlertDialogAction className={buttonVariants({ variant: "destructive" })} onClick={onConfirm}>
+          <AlertDialogAction
+            className={buttonVariants({ variant: "destructive" })}
+            onClick={onConfirm}
+          >
             {confirm}
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -3,13 +3,7 @@ export type TicketType = "requerimiento" | "incidencia";
 export type TicketStatus = "nueva" | "asignada" | "resuelta" | "rechazada" | "cerrada";
 
 export type TimelineKind =
-  | "creada"
-  | "reabierta"
-  | "asignada"
-  | "resuelta"
-  | "rechazada"
-  | "cerrada"
-  | "cancelada";
+  "creada" | "reabierta" | "asignada" | "resuelta" | "rechazada" | "cerrada" | "cancelada";
 
 export interface Attachment {
   id: string;

@@ -92,7 +92,9 @@ describe("what the owner can do", () => {
 
   it("closed tickets can be reopened once", () => {
     expect(canReopen(makeTicket({ status: "cerrada" }))).toBe(true);
-    expect(canReopen(makeTicket({ status: "cerrada", reopenedAs: { id: "x", code: "INC 2026-1050" } }))).toBe(false);
+    expect(
+      canReopen(makeTicket({ status: "cerrada", reopenedAs: { id: "x", code: "INC 2026-1050" } })),
+    ).toBe(false);
   });
 });
 

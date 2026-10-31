@@ -1,5 +1,14 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, CheckCheck, ChevronDown, FilePlus2, Inbox, LogOut, Menu, UserRound } from "lucide-react";
+import {
+  Bell,
+  CheckCheck,
+  ChevronDown,
+  FilePlus2,
+  Inbox,
+  LogOut,
+  Menu,
+  UserRound,
+} from "lucide-react";
 import { useEffect, type ReactNode } from "react";
 import { toast } from "sonner";
 
@@ -60,7 +69,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
           <MobileNav />
-          <Link to="/" className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <Link
+            to="/"
+            className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
             <Wordmark />
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
@@ -71,7 +83,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="nav" size="sm" className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground">
+                <Button
+                  variant="nav"
+                  size="sm"
+                  className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground"
+                >
                   Tickets
                   <ChevronDown className="transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
                 </Button>
@@ -159,7 +175,12 @@ function NotificationsMenu() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label={`Notificaciones (${unread} sin leer)`}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative rounded-full"
+          aria-label={`Notificaciones (${unread} sin leer)`}
+        >
           <Bell className="size-[18px]" />
           {unread > 0 && (
             <span className="absolute right-1 top-1 flex min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-semibold leading-4 text-signal-foreground tabular">
@@ -172,10 +193,17 @@ function NotificationsMenu() {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div>
             <p className="text-sm font-semibold">Notificaciones</p>
-            <p className="text-xs text-muted-foreground">{unread ? `${unread} sin leer` : "Estás al día"}</p>
+            <p className="text-xs text-muted-foreground">
+              {unread ? `${unread} sin leer` : "Estás al día"}
+            </p>
           </div>
           {unread > 0 && (
-            <Button variant="ghost" size="sm" onClick={markAllNotificationsRead} className="text-xs">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={markAllNotificationsRead}
+              className="text-xs"
+            >
               <CheckCheck /> Marcar todo
             </Button>
           )}
@@ -201,14 +229,25 @@ function NotificationsMenu() {
                       !n.read && "bg-accent/40",
                     )}
                   >
-                    <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", n.read ? "bg-transparent" : "bg-primary")} />
+                    <span
+                      className={cn(
+                        "mt-1.5 size-2 shrink-0 rounded-full",
+                        n.read ? "bg-transparent" : "bg-primary",
+                      )}
+                    />
                     <span className="min-w-0 flex-1">
                       <span className="flex items-baseline justify-between gap-2">
                         <span className="truncate text-sm font-medium">{n.title}</span>
-                        <span className="shrink-0 text-[11px] text-muted-foreground">{timeAgo(n.at)}</span>
+                        <span className="shrink-0 text-[11px] text-muted-foreground">
+                          {timeAgo(n.at)}
+                        </span>
                       </span>
-                      <span className="mt-0.5 block font-mono text-[11px] text-muted-foreground">{n.code}</span>
-                      <span className="mt-0.5 line-clamp-2 block text-xs text-muted-foreground">{n.body}</span>
+                      <span className="mt-0.5 block font-mono text-[11px] text-muted-foreground">
+                        {n.code}
+                      </span>
+                      <span className="mt-0.5 line-clamp-2 block text-xs text-muted-foreground">
+                        {n.body}
+                      </span>
                     </span>
                   </button>
                 </li>
@@ -276,7 +315,11 @@ export function PageHeader({
   return (
     <div className="flex flex-col gap-4 pb-8 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        {eyebrow && <p className="mb-2 text-xs font-medium uppercase tracking-[0.14em] text-primary">{eyebrow}</p>}
+        {eyebrow && (
+          <p className="mb-2 text-xs font-medium uppercase tracking-[0.14em] text-primary">
+            {eyebrow}
+          </p>
+        )}
         <h1 className="text-3xl font-semibold sm:text-[34px]">{title}</h1>
         {description && <p className="mt-2 max-w-xl text-muted-foreground">{description}</p>}
       </div>

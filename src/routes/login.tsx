@@ -1,5 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertCircle, Check, Eye, EyeOff, Headset, Loader2, ShieldCheck, Users } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  Eye,
+  EyeOff,
+  Headset,
+  Loader2,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -20,16 +29,21 @@ export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
       { title: "USM Denuncia" },
-      { name: "description", content: "Ingresa con tu cuenta institucional para reportar y seguir tus tickets." },
+      {
+        name: "description",
+        content: "Ingresa con tu cuenta institucional para reportar y seguir tus tickets.",
+      },
       { property: "og:title", content: "USM Denuncia" },
-      { property: "og:description", content: "Ingresa con tu cuenta institucional para reportar y seguir tus tickets." },
+      {
+        property: "og:description",
+        content: "Ingresa con tu cuenta institucional para reportar y seguir tus tickets.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LoginPage,
 });
-
 
 function LoginPage() {
   const hydrated = useHydrated();
@@ -53,25 +67,28 @@ function LoginPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="bg-ink text-white py-3 px-5 text-[.78rem] flex flex-row-reverse">
-        <a href="https://usm.cl/" className="font-semibold">USM.cl</a>
+        <a href="https://usm.cl/" className="font-semibold">
+          USM.cl
+        </a>
       </div>
       <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
         <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
           <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
           <div className="relative flex flex-1 flex-col justify-between p-12">
             {/* <Wordmark inverted /> */}
-            <div/>
-            <div/>
+            <div />
+            <div />
             <div className="max-w-md">
               {/* <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-ink-foreground/60">USM Denuncia</p> */}
-              <Wordmark inverted className="mb-5"/>
+              <Wordmark inverted className="mb-5" />
               <h1 className="font-display text-[44px] leading-[1.05]">
                 Comunica, solicita
                 <br />
                 <span className="font-bold"> y contribuye al cambio.</span>
               </h1>
               <p className="mt-5 text-ink-foreground/70">
-                Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes dentro de la universidad, de manera fácil y desde cualquier dispositivo.
+                Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes dentro
+                de la universidad, de manera fácil y desde cualquier dispositivo.
               </p>
             </div>
           </div>
@@ -83,7 +100,9 @@ function LoginPage() {
               <Wordmark />
             </div>
             <h2 className="text-3xl font-semibold">Ingresa a la plataforma</h2>
-            <p className="mt-2 text-muted-foreground">Elige la forma de acceso que corresponda a tu perfil.</p>
+            <p className="mt-2 text-muted-foreground">
+              Elige la forma de acceso que corresponda a tu perfil.
+            </p>
 
             <div className="mt-8 grid gap-4">
               <PortalCard
@@ -91,7 +110,13 @@ function LoginPage() {
                 title="Comunidad USM"
                 description="Estudiantes, docentes, funcionarios y toda persona con cuenta @usm.cl."
               >
-                <Button variant="default" size="xl" className="w-full" onClick={microsoft} disabled={loading}>
+                <Button
+                  variant="default"
+                  size="xl"
+                  className="w-full"
+                  onClick={microsoft}
+                  disabled={loading}
+                >
                   {loading ? <Loader2 className="animate-spin" /> : <MicrosoftLogo />}
                   {loading ? "Conectando con Microsoft 365…" : "Continuar con Microsoft 365"}
                 </Button>
@@ -101,7 +126,12 @@ function LoginPage() {
                 title="Soporte y administración"
                 description="Equipos de atención y administradores de la plataforma."
               >
-                <Button variant="secondary" size="xl" className="w-full" onClick={() => setManualOpen(true)}>
+                <Button
+                  variant="secondary"
+                  size="xl"
+                  className="w-full"
+                  onClick={() => setManualOpen(true)}
+                >
                   Ingresar manualmente
                 </Button>
               </PortalCard>
@@ -140,17 +170,22 @@ function PortalCard({
         </div>
       </div>
       <div className="mt-4">{children}</div>
-      {
-        note &&
+      {note && (
         <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
           <ShieldCheck className="size-3.5" /> {note}
         </p>
-      }
+      )}
     </section>
   );
 }
 
-function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+function ManualLoginDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -171,7 +206,9 @@ function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange
       <DialogContent className="sm:max-w-[420px] sm:rounded-2xl">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">Ingreso con cuenta manual</DialogTitle>
-          <DialogDescription>Exclusivo para personal de soporte y administración.</DialogDescription>
+          <DialogDescription>
+            Exclusivo para personal de soporte y administración.
+          </DialogDescription>
         </DialogHeader>
         <form
           className="space-y-4"
@@ -193,7 +230,14 @@ function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange
           )}
           <div>
             <Label htmlFor="admin-email">Correo</Label>
-            <Input id="admin-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5 h-11" />
+            <Input
+              id="admin-email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1.5 h-11"
+            />
           </div>
           <div>
             <Label htmlFor="admin-password">Contraseña</Label>

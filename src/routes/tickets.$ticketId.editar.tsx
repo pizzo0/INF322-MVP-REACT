@@ -35,9 +35,7 @@ function EditPage() {
   const ticket = useTicket(ticketId);
 
   if (!ticket) {
-    return (
-      <Centered title="Ticket no encontrado" text="Es posible que haya sido eliminado." />
-    );
+    return <Centered title="Ticket no encontrado" text="Es posible que haya sido eliminado." />;
   }
   if (ticket.status === "cerrada" && !canReopen(ticket)) {
     return (
@@ -54,13 +52,19 @@ function EditForm({ ticket }: { ticket: Ticket }) {
   const session = useSession();
   const navigate = useNavigate();
   // Freeze the mode when the page opens so a background status change doesn't reshape the wizard.
-  const [mode] = useState(() => (ticket.status === "cerrada" ? "reabrir" : "editar") as "reabrir" | "editar");
+  const [mode] = useState(
+    () => (ticket.status === "cerrada" ? "reabrir" : "editar") as "reabrir" | "editar",
+  );
   const [limited] = useState(() => mode === "reabrir" || editScope(ticket) === "limitada");
   const [initial] = useState(() => draftFromTicket(ticket));
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
-      <Link to="/tickets" search={{ ticket: ticket.id }} className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/tickets"
+        search={{ ticket: ticket.id }}
+        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ChevronLeft className="size-4" /> Volver al ticket
       </Link>
       <PageHeader

@@ -10,9 +10,15 @@ export const Route = createFileRoute("/contacto")({
   head: () => ({
     meta: [
       { title: "Contacto | USM Denuncia" },
-      { name: "description", content: "Equipos y personas responsables de atender los tickets de la plataforma." },
+      {
+        name: "description",
+        content: "Equipos y personas responsables de atender los tickets de la plataforma.",
+      },
       { property: "og:title", content: "Contacto" },
-      { property: "og:description", content: "Equipos y personas responsables de atender los tickets de la plataforma." },
+      {
+        property: "og:description",
+        content: "Equipos y personas responsables de atender los tickets de la plataforma.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -44,7 +50,9 @@ function ContactPage() {
       >
         <div>
           <p className="font-display text-lg font-semibold">Canal general de soporte</p>
-          <p className="text-sm text-ink-foreground/70">Para consultas sobre la plataforma que no correspondan a un ticket.</p>
+          <p className="text-sm text-ink-foreground/70">
+            Para consultas sobre la plataforma que no correspondan a un ticket.
+          </p>
         </div>
         <span className="mt-3 inline-flex items-center gap-2 font-mono text-sm sm:mt-0">
           <Mail className="size-4" /> {SUPPORT_EMAIL}
@@ -60,14 +68,20 @@ function ContactPage() {
             </div>
             <ul className="grid gap-2.5 sm:grid-cols-2">
               {CONTACTS.filter((c) => c.team === team.id).map((c) => (
-                <li key={c.email} className="group flex items-center gap-3 rounded-xl border bg-card p-4 shadow-soft">
+                <li
+                  key={c.email}
+                  className="group flex items-center gap-3 rounded-xl border bg-card p-4 shadow-soft"
+                >
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
                     {initials(c.name)}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{c.name}</p>
                     <p className="truncate text-xs text-muted-foreground">{c.role}</p>
-                    <a href={`mailto:${c.email}`} className="mt-1 block truncate text-sm text-primary hover:underline">
+                    <a
+                      href={`mailto:${c.email}`}
+                      className="mt-1 block truncate text-sm text-primary hover:underline"
+                    >
                       {c.email}
                     </a>
                   </div>

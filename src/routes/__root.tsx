@@ -20,7 +20,9 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Página no encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">La página que buscas no existe o fue movida.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          La página que buscas no existe o fue movida.
+        </p>
         <div className="mt-6">
           <Link
             to="/"
@@ -44,8 +46,12 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">No se pudo cargar la página</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Ocurrió un error. Intenta nuevamente o vuelve al inicio.</p>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          No se pudo cargar la página
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Ocurrió un error. Intenta nuevamente o vuelve al inicio.
+        </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -76,7 +82,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "USM Denuncia" },
       { name: "description", content: "USM Denuncia" },
       { property: "og:title", content: "USM Denuncia" },
-      { property: "og:description", content: "Reporta incidencias y requerimientos y sigue su estado en un solo lugar." },
+      {
+        property: "og:description",
+        content: "Reporta incidencias y requerimientos y sigue su estado en un solo lugar.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

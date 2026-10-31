@@ -7,7 +7,15 @@ import { typeLabel } from "@/lib/usm/rules";
 import type { Ticket } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
 
-export function TicketRow({ ticket, onOpen, className }: { ticket: Ticket; onOpen: (id: string) => void; className?: string }) {
+export function TicketRow({
+  ticket,
+  onOpen,
+  className,
+}: {
+  ticket: Ticket;
+  onOpen: (id: string) => void;
+  className?: string;
+}) {
   const category = getCategory(ticket.categoryId);
   return (
     <button
@@ -26,7 +34,8 @@ export function TicketRow({ ticket, onOpen, className }: { ticket: Ticket; onOpe
         </div>
         <p className="mt-1.5 truncate text-[15px] font-medium text-foreground">{ticket.title}</p>
         <p className="mt-0.5 truncate text-xs text-muted-foreground">
-          {typeLabel(ticket.type)} · {category?.name ?? "Sin categoría"} · actualizado {timeAgo(ticket.updatedAt)}
+          {typeLabel(ticket.type)} · {category?.name ?? "Sin categoría"} · actualizado{" "}
+          {timeAgo(ticket.updatedAt)}
         </p>
       </div>
       <div className="flex items-center justify-between gap-4 sm:justify-end">
@@ -34,7 +43,9 @@ export function TicketRow({ ticket, onOpen, className }: { ticket: Ticket; onOpe
           <span
             className={cn(
               "flex size-7 items-center justify-center rounded-full text-[11px] font-semibold",
-              ticket.assignee ? "bg-accent text-accent-foreground" : "border border-dashed text-muted-foreground",
+              ticket.assignee
+                ? "bg-accent text-accent-foreground"
+                : "border border-dashed text-muted-foreground",
             )}
           >
             {ticket.assignee ? (

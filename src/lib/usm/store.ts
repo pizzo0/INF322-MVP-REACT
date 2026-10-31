@@ -55,7 +55,9 @@ function createPersisted<T>(key: string, fallback: T) {
     } catch {
       // Storage full: drop image previews and retry once.
       try {
-        const stripped = JSON.parse(JSON.stringify(state, (k, v) => (k === "dataUrl" ? undefined : v)));
+        const stripped = JSON.parse(
+          JSON.stringify(state, (k, v) => (k === "dataUrl" ? undefined : v)),
+        );
         window.localStorage.setItem(key, JSON.stringify(stripped));
       } catch {
         /* give up silently; state stays in memory */
@@ -171,7 +173,9 @@ function buildTicket(seq: number, owner: Session, d: TicketDraft, at: number): T
     status: "nueva",
     createdAt: at,
     updatedAt: at,
-    timeline: [{ id: uid("e"), kind: "creada", at, description: "Ticket ingresado por el usuario." }],
+    timeline: [
+      { id: uid("e"), kind: "creada", at, description: "Ticket ingresado por el usuario." },
+    ],
     comments: [],
     history: [],
   };
@@ -188,7 +192,12 @@ export function createTicket(owner: Session, d: TicketDraft): Ticket {
       seq,
       tickets: [created, ...s.tickets],
       notifications: [
-        note(created, "Ticket creado", "Será asignado a un responsable en un mínimo de 5 minutos.", now),
+        note(
+          created,
+          "Ticket creado",
+          "Será asignado a un responsable en un mínimo de 5 minutos.",
+          now,
+        ),
         ...s.notifications,
       ],
     };
@@ -262,7 +271,10 @@ export function cancelTicket(id: string): boolean {
         closedAt: now,
         closedReason: "cancelado",
         updatedAt: now,
-        timeline: [...t.timeline, { id: uid("e"), kind: "cancelada", at: now, description: "Cerrado por el usuario." }],
+        timeline: [
+          ...t.timeline,
+          { id: uid("e"), kind: "cancelada", at: now, description: "Cerrado por el usuario." },
+        ],
       };
     }),
   }));
@@ -277,10 +289,20 @@ export function reopenTicket(owner: Session, id: string, d: TicketDraft): Ticket
     if (!old || !canReopen(old)) return s;
     const seq = s.seq + 1;
     const base = draftFromTicket(old);
-    const next = buildTicket(seq, owner, { ...base, title: d.title, description: d.description, attachments: d.attachments }, now);
+    const next = buildTicket(
+      seq,
+      owner,
+      { ...base, title: d.title, description: d.description, attachments: d.attachments },
+      now,
+    );
     next.reopenedFrom = { id: old.id, code: old.code };
     next.timeline = [
-      { id: uid("e"), kind: "reabierta", at: now, description: `Reabierto a partir de ${old.code}.` },
+      {
+        id: uid("e"),
+        kind: "reabierta",
+        at: now,
+        description: `Reabierto a partir de ${old.code}.`,
+      },
     ];
     next.history = diffDraft(base, draftFromTicket(next), now);
     created = next;
@@ -290,7 +312,9 @@ export function reopenTicket(owner: Session, id: string, d: TicketDraft): Ticket
       tickets: [
         next,
         ...s.tickets.map((t) =>
-          t.id === old.id ? { ...t, reopenedAs: { id: next.id, code: next.code }, updatedAt: now } : t,
+          t.id === old.id
+            ? { ...t, reopenedAs: { id: next.id, code: next.code }, updatedAt: now }
+            : t,
         ),
       ],
       notifications: [
@@ -311,7 +335,10 @@ export function addComment(id: string, author: Person, body: string) {
         ? {
             ...t,
             updatedAt: now,
-            comments: [...t.comments, { id: uid("c"), at: now, author, fromStaff: false, body: body.trim() }],
+            comments: [
+              ...t.comments,
+              { id: uid("c"), at: now, author, fromStaff: false, body: body.trim() },
+            ],
           }
         : t,
     ),
@@ -361,31 +388,41 @@ function seedIfEmpty(owner: Session) {
 
   const closedAt = now - 3 * 24 * 60 * MINUTE;
   const closed = advanceTicket(
-    buildTicket(SEQ_BASE + 1, owner, {
-      type: "incidencia",
-      categoryId: "inc-red",
-      location: { campus: "Casa Central Valparaíso", building: "Edificio C", room: "C-210" },
-      title: "Sin conexión a la red Wi-Fi en el edificio C",
-      description:
-        "Desde la mañana la red institucional no permite autenticarse en el segundo piso del edificio C. Afecta a varios estudiantes durante las clases.",
-      onBehalfOf: "",
-      attachments: noFiles,
-    }, closedAt),
+    buildTicket(
+      SEQ_BASE + 1,
+      owner,
+      {
+        type: "incidencia",
+        categoryId: "inc-red",
+        location: { campus: "Casa Central Valparaíso", building: "Edificio C", room: "C-210" },
+        title: "Sin conexión a la red Wi-Fi en el edificio C",
+        description:
+          "Desde la mañana la red institucional no permite autenticarse en el segundo piso del edificio C. Afecta a varios estudiantes durante las clases.",
+        onBehalfOf: "",
+        attachments: noFiles,
+      },
+      closedAt,
+    ),
     now,
   );
 
   const assignedAt = now - 8 * MINUTE;
   const assigned = advanceTicket(
-    buildTicket(SEQ_BASE + 2, owner, {
-      type: "requerimiento",
-      categoryId: "req-matlab",
-      location: { campus: "Campus Santiago San Joaquín", building: "Edificio A", room: "" },
-      title: "Licencia de Matlab para curso de métodos numéricos",
-      description:
-        "Necesito activar la licencia institucional de Matlab con el toolbox de optimización para el curso de métodos numéricos de este semestre.",
-      onBehalfOf: "",
-      attachments: noFiles,
-    }, assignedAt),
+    buildTicket(
+      SEQ_BASE + 2,
+      owner,
+      {
+        type: "requerimiento",
+        categoryId: "req-matlab",
+        location: { campus: "Campus Santiago San Joaquín", building: "Edificio A", room: "" },
+        title: "Licencia de Matlab para curso de métodos numéricos",
+        description:
+          "Necesito activar la licencia institucional de Matlab con el toolbox de optimización para el curso de métodos numéricos de este semestre.",
+        onBehalfOf: "",
+        attachments: noFiles,
+      },
+      assignedAt,
+    ),
     now,
   );
 

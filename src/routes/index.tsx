@@ -11,9 +11,15 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Página Principal | USM Denuncia" },
-      { name: "description", content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos." },
+      {
+        name: "description",
+        content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos.",
+      },
       { property: "og:title", content: "Página Principal" },
-      { property: "og:description", content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos." },
+      {
+        property: "og:description",
+        content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -55,9 +61,12 @@ function Home() {
                   <FilePlus2 className="size-5" />
                 </span>
                 <p className="mt-6 font-display text-2xl font-semibold">Crear ticket</p>
-                <p className="mt-1 text-sm text-ink-foreground/70">Reporta una incidencia o realiza un requerimiento en pocos pasos.</p>
+                <p className="mt-1 text-sm text-ink-foreground/70">
+                  Reporta una incidencia o realiza un requerimiento en pocos pasos.
+                </p>
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium">
-                  Comenzar <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  Comenzar{" "}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </div>
             </Link>
@@ -75,7 +84,8 @@ function Home() {
                 <Stat value={closed} label="Cerrados" tone="text-status-closed" />
               </div>
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                Ver todos <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                Ver todos{" "}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>
           </div>
@@ -95,7 +105,9 @@ function Home() {
         {recent.length === 0 ? (
           <div className="rounded-2xl border border-dashed bg-card px-6 py-12 text-center">
             <p className="font-medium">Aún no has creado tickets</p>
-            <p className="mt-1 text-sm text-muted-foreground">Cuando reportes un problema, podrás seguirlo desde aquí.</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Cuando reportes un problema, podrás seguirlo desde aquí.
+            </p>
           </div>
         ) : (
           <div className="grid gap-2.5">

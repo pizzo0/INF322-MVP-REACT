@@ -18,12 +18,26 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { CAMPUSES, TICKET_TYPES, categoriesFor, getCategory } from "@/lib/usm/catalog";
 import { bytes } from "@/lib/usm/format";
-import { MAX_FILE_BYTES, selectCategory, selectType, typeLabel, uid, validateDraft, type DraftErrors } from "@/lib/usm/rules";
+import {
+  MAX_FILE_BYTES,
+  selectCategory,
+  selectType,
+  typeLabel,
+  uid,
+  validateDraft,
+  type DraftErrors,
+} from "@/lib/usm/rules";
 import type { Attachment, TicketDraft } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
 
@@ -60,7 +74,9 @@ export function TicketWizard({
   onSubmit: (draft: TicketDraft) => void;
   onCancel: () => void;
 }) {
-  const steps: StepId[] = limited ? ["detalles", "resumen"] : ["tipo", "categoria", "ubicacion", "detalles", "resumen"];
+  const steps: StepId[] = limited
+    ? ["detalles", "resumen"]
+    : ["tipo", "categoria", "ubicacion", "detalles", "resumen"];
   const [draft, setDraft] = useState<TicketDraft>(initial);
   const [index, setIndex] = useState(0);
   const [showErrors, setShowErrors] = useState(false);
@@ -91,7 +107,12 @@ export function TicketWizard({
     }
   };
 
-  const confirmLabel = mode === "crear" ? "Confirmar ticket" : mode === "editar" ? "Guardar cambios" : "Reabrir ticket";
+  const confirmLabel =
+    mode === "crear"
+      ? "Confirmar ticket"
+      : mode === "editar"
+        ? "Guardar cambios"
+        : "Reabrir ticket";
   const err = (k: keyof DraftErrors) => (showErrors ? errors[k] : undefined);
 
   return (
@@ -109,7 +130,9 @@ export function TicketWizard({
                 onClick={() => jumpTo(s)}
                 className={cn(
                   "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors disabled:cursor-not-allowed",
-                  active ? "bg-card shadow-soft ring-1 ring-border" : "hover:bg-accent/60 disabled:hover:bg-transparent",
+                  active
+                    ? "bg-card shadow-soft ring-1 ring-border"
+                    : "hover:bg-accent/60 disabled:hover:bg-transparent",
                 )}
               >
                 <span
@@ -123,7 +146,9 @@ export function TicketWizard({
                   {done ? <Check className="size-3.5" /> : i + 1}
                 </span>
                 <span className="hidden flex-col sm:flex">
-                  <span className={cn("text-sm font-medium", !active && "text-muted-foreground")}>{STEP_META[s].label}</span>
+                  <span className={cn("text-sm font-medium", !active && "text-muted-foreground")}>
+                    {STEP_META[s].label}
+                  </span>
                   <span className="text-xs text-muted-foreground">{STEP_META[s].hint}</span>
                 </span>
               </button>
@@ -158,7 +183,8 @@ export function TicketWizard({
                   const next = selectType(draft, type);
                   if (draft.categoryId && next.categoryId === null) {
                     toast.info("Se reinició la categoría", {
-                      description: "Las categorías dependen del tipo de problema. Vuelve a seleccionar una.",
+                      description:
+                        "Las categorías dependen del tipo de problema. Vuelve a seleccionar una.",
                     });
                   }
                   setDraft(next);
@@ -166,10 +192,18 @@ export function TicketWizard({
               />
             )}
             {step === "categoria" && (
-              <CategoryStep draft={draft} error={err("categoryId")} onChange={(id) => setDraft(selectCategory(draft, id))} />
+              <CategoryStep
+                draft={draft}
+                error={err("categoryId")}
+                onChange={(id) => setDraft(selectCategory(draft, id))}
+              />
             )}
-            {step === "ubicacion" && <LocationStep draft={draft} error={err("campus")} onChange={setDraft} />}
-            {step === "detalles" && <DetailsStep draft={draft} errors={showErrors ? errors : {}} onChange={setDraft} />}
+            {step === "ubicacion" && (
+              <LocationStep draft={draft} error={err("campus")} onChange={setDraft} />
+            )}
+            {step === "detalles" && (
+              <DetailsStep draft={draft} errors={showErrors ? errors : {}} onChange={setDraft} />
+            )}
             {step === "resumen" && <SummaryStep draft={draft} limited={limited} onEdit={jumpTo} />}
           </div>
 
@@ -238,7 +272,8 @@ function OptionCard({
       onClick={onClick}
       className={cn(
         "relative w-full cursor-pointer rounded-xl border bg-card p-4 text-left transition-all duration-150 hover:border-ring/50 hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        selected && "border-primary bg-accent/50 ring-1 ring-primary hover:border-primary hover:bg-accent/50",
+        selected &&
+          "border-primary bg-accent/50 ring-1 ring-primary hover:border-primary hover:bg-accent/50",
         className,
       )}
     >
@@ -255,15 +290,30 @@ function OptionCard({
   );
 }
 
-function TypeStep({ value, error, onChange }: { value: TicketDraft["type"]; error?: string | undefined; onChange: (t: NonNullable<TicketDraft["type"]>) => void }) {
+function TypeStep({
+  value,
+  error,
+  onChange,
+}: {
+  value: TicketDraft["type"];
+  error?: string | undefined;
+  onChange: (t: NonNullable<TicketDraft["type"]>) => void;
+}) {
   return (
     <div role="radiogroup" aria-label="Tipo de problema">
-      <p className="mb-5 text-sm text-muted-foreground">Selecciona la opción que mejor describe tu caso.</p>
+      <p className="mb-5 text-sm text-muted-foreground">
+        Selecciona la opción que mejor describe tu caso.
+      </p>
       <div className="grid gap-3 sm:grid-cols-2">
         {TICKET_TYPES.map((t) => {
           const Icon = t.id === "incidencia" ? AlertTriangle : ClipboardList;
           return (
-            <OptionCard key={t.id} selected={value === t.id} onClick={() => onChange(t.id)} className="p-5">
+            <OptionCard
+              key={t.id}
+              selected={value === t.id}
+              onClick={() => onChange(t.id)}
+              className="p-5"
+            >
               <span className="flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
                 <Icon className="size-5" />
               </span>
@@ -279,49 +329,89 @@ function TypeStep({ value, error, onChange }: { value: TicketDraft["type"]; erro
   );
 }
 
-function CategoryStep({ draft, error, onChange }: { draft: TicketDraft; error?: string | undefined; onChange: (id: string) => void }) {
+function CategoryStep({
+  draft,
+  error,
+  onChange,
+}: {
+  draft: TicketDraft;
+  error?: string | undefined;
+  onChange: (id: string) => void;
+}) {
   const [q, setQ] = useState("");
   const list = useMemo(() => {
     const all = categoriesFor(draft.type);
     const term = q.trim().toLowerCase();
-    return term ? all.filter((c) => `${c.name} ${c.description}`.toLowerCase().includes(term)) : all;
+    return term
+      ? all.filter((c) => `${c.name} ${c.description}`.toLowerCase().includes(term))
+      : all;
   }, [draft.type, q]);
 
   return (
     <div>
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          Categorías disponibles para <span className="font-medium text-foreground">{typeLabel(draft.type).toLowerCase()}</span>.
+          Categorías disponibles para{" "}
+          <span className="font-medium text-foreground">{typeLabel(draft.type).toLowerCase()}</span>
+          .
         </p>
         <div className="relative sm:w-64">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar categoría" className="pl-9" />
+          <Input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Buscar categoría"
+            className="pl-9"
+          />
         </div>
       </div>
       <div role="radiogroup" aria-label="Categoría" className="grid gap-2.5 sm:grid-cols-2">
         {list.map((c) => (
-          <OptionCard key={c.id} selected={draft.categoryId === c.id} onClick={() => onChange(c.id)} className="py-3.5 pr-12">
+          <OptionCard
+            key={c.id}
+            selected={draft.categoryId === c.id}
+            onClick={() => onChange(c.id)}
+            className="py-3.5 pr-12"
+          >
             <p className="text-sm font-semibold">{c.name}</p>
             <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{c.description}</p>
           </OptionCard>
         ))}
-        {list.length === 0 && <p className="text-sm text-muted-foreground">No hay categorías que coincidan con tu búsqueda.</p>}
+        {list.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            No hay categorías que coincidan con tu búsqueda.
+          </p>
+        )}
       </div>
       <FieldError>{error}</FieldError>
     </div>
   );
 }
 
-function LocationStep({ draft, error, onChange }: { draft: TicketDraft; error?: string | undefined; onChange: (d: TicketDraft) => void }) {
-  const set = (k: keyof TicketDraft["location"], v: string) => onChange({ ...draft, location: { ...draft.location, [k]: v } });
+function LocationStep({
+  draft,
+  error,
+  onChange,
+}: {
+  draft: TicketDraft;
+  error?: string | undefined;
+  onChange: (d: TicketDraft) => void;
+}) {
+  const set = (k: keyof TicketDraft["location"], v: string) =>
+    onChange({ ...draft, location: { ...draft.location, [k]: v } });
   return (
     <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">Indica dónde ocurre el problema. Solo el campus es obligatorio.</p>
+      <p className="text-sm text-muted-foreground">
+        Indica dónde ocurre el problema. Solo el campus es obligatorio.
+      </p>
       <div>
         <Label htmlFor="campus">
           Campus o sede <span className="text-destructive">*</span>
         </Label>
-        <Select {...(draft.location.campus ? { value: draft.location.campus } : {})} onValueChange={(v) => set("campus", v)}>
+        <Select
+          {...(draft.location.campus ? { value: draft.location.campus } : {})}
+          onValueChange={(v) => set("campus", v)}
+        >
           <SelectTrigger id="campus" className={cn("mt-1.5 h-11", error && "border-destructive")}>
             <span className="flex items-center gap-2">
               <MapPin className="size-4 text-muted-foreground" />
@@ -343,13 +433,25 @@ function LocationStep({ draft, error, onChange }: { draft: TicketDraft; error?: 
           <Label htmlFor="building">
             Edificio <span className="font-normal text-muted-foreground">(opcional)</span>
           </Label>
-          <Input id="building" value={draft.location.building} onChange={(e) => set("building", e.target.value)} placeholder="Ej.: Edificio C" className="mt-1.5 h-11" />
+          <Input
+            id="building"
+            value={draft.location.building}
+            onChange={(e) => set("building", e.target.value)}
+            placeholder="Ej.: Edificio C"
+            className="mt-1.5 h-11"
+          />
         </div>
         <div>
           <Label htmlFor="room">
             Sala <span className="font-normal text-muted-foreground">(opcional)</span>
           </Label>
-          <Input id="room" value={draft.location.room} onChange={(e) => set("room", e.target.value)} placeholder="Ej.: C-210" className="mt-1.5 h-11" />
+          <Input
+            id="room"
+            value={draft.location.room}
+            onChange={(e) => set("room", e.target.value)}
+            placeholder="Ej.: C-210"
+            className="mt-1.5 h-11"
+          />
         </div>
       </div>
     </div>
@@ -367,7 +469,15 @@ function readFile(file: File): Promise<Attachment> {
   });
 }
 
-function DetailsStep({ draft, errors, onChange }: { draft: TicketDraft; errors: DraftErrors; onChange: (d: TicketDraft) => void }) {
+function DetailsStep({
+  draft,
+  errors,
+  onChange,
+}: {
+  draft: TicketDraft;
+  errors: DraftErrors;
+  onChange: (d: TicketDraft) => void;
+}) {
   const [onBehalf, setOnBehalf] = useState(!!draft.onBehalfOf);
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -426,7 +536,9 @@ function DetailsStep({ draft, errors, onChange }: { draft: TicketDraft; errors: 
             <Label htmlFor="behalf-switch" className="text-sm">
               Notificar en nombre de otra persona
             </Label>
-            <p className="mt-0.5 text-xs text-muted-foreground">La persona indicada recibirá las actualizaciones del ticket.</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              La persona indicada recibirá las actualizaciones del ticket.
+            </p>
           </div>
           <Switch
             id="behalf-switch"
@@ -475,8 +587,12 @@ function DetailsStep({ draft, errors, onChange }: { draft: TicketDraft; errors: 
           <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
             <UploadCloud className="size-5" />
           </span>
-          <p className="text-sm font-medium">Arrastra archivos aquí o haz clic para seleccionarlos</p>
-          <p className="text-xs text-muted-foreground">Imágenes, PDF o documentos · hasta 10 MB cada uno · máximo 6</p>
+          <p className="text-sm font-medium">
+            Arrastra archivos aquí o haz clic para seleccionarlos
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Imágenes, PDF o documentos · hasta 10 MB cada uno · máximo 6
+          </p>
           <input
             ref={inputRef}
             type="file"
@@ -489,13 +605,26 @@ function DetailsStep({ draft, errors, onChange }: { draft: TicketDraft; errors: 
             }}
           />
         </div>
-        {draft.attachments.length > 0 && <AttachmentList items={draft.attachments} onRemove={(id) => onChange({ ...draft, attachments: draft.attachments.filter((a) => a.id !== id) })} />}
+        {draft.attachments.length > 0 && (
+          <AttachmentList
+            items={draft.attachments}
+            onRemove={(id) =>
+              onChange({ ...draft, attachments: draft.attachments.filter((a) => a.id !== id) })
+            }
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function AttachmentList({ items, onRemove }: { items: Attachment[]; onRemove?: (id: string) => void }) {
+function AttachmentList({
+  items,
+  onRemove,
+}: {
+  items: Attachment[];
+  onRemove?: (id: string) => void;
+}) {
   return (
     <ul className="mt-3 grid gap-2 sm:grid-cols-2">
       {items.map((a) => (
@@ -512,7 +641,14 @@ function AttachmentList({ items, onRemove }: { items: Attachment[]; onRemove?: (
             <span className="text-xs text-muted-foreground">{bytes(a.size)}</span>
           </span>
           {onRemove && (
-            <Button type="button" variant="ghost" size="icon" className="size-8" onClick={() => onRemove(a.id)} aria-label={`Quitar ${a.name}`}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-8"
+              onClick={() => onRemove(a.id)}
+              aria-label={`Quitar ${a.name}`}
+            >
               <X />
             </Button>
           )}
@@ -522,12 +658,22 @@ function AttachmentList({ items, onRemove }: { items: Attachment[]; onRemove?: (
   );
 }
 
-function SummaryStep({ draft, limited, onEdit }: { draft: TicketDraft; limited: boolean; onEdit: (s: StepId) => void }) {
+function SummaryStep({
+  draft,
+  limited,
+  onEdit,
+}: {
+  draft: TicketDraft;
+  limited: boolean;
+  onEdit: (s: StepId) => void;
+}) {
   const category = getCategory(draft.categoryId);
   const loc = draft.location;
   return (
     <div className="space-y-1">
-      <p className="mb-4 text-sm text-muted-foreground">Revisa que la información sea correcta antes de confirmar.</p>
+      <p className="mb-4 text-sm text-muted-foreground">
+        Revisa que la información sea correcta antes de confirmar.
+      </p>
       <dl className="divide-y rounded-xl border">
         <Row label="Tipo de problema" locked={limited} onEdit={() => onEdit("tipo")}>
           {typeLabel(draft.type)}
@@ -537,7 +683,11 @@ function SummaryStep({ draft, limited, onEdit }: { draft: TicketDraft; limited: 
         </Row>
         <Row label="Ubicación" locked={limited} onEdit={() => onEdit("ubicacion")}>
           {loc.campus}
-          {(loc.building || loc.room) && <span className="block text-muted-foreground">{[loc.building, loc.room].filter(Boolean).join(" · ")}</span>}
+          {(loc.building || loc.room) && (
+            <span className="block text-muted-foreground">
+              {[loc.building, loc.room].filter(Boolean).join(" · ")}
+            </span>
+          )}
         </Row>
         <Row label="Título" onEdit={() => onEdit("detalles")}>
           {draft.title}
@@ -552,7 +702,10 @@ function SummaryStep({ draft, limited, onEdit }: { draft: TicketDraft; limited: 
           {draft.attachments.length ? (
             <span className="flex flex-wrap gap-1.5">
               {draft.attachments.map((a) => (
-                <span key={a.id} className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs">
+                <span
+                  key={a.id}
+                  className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs"
+                >
                   <Paperclip className="size-3" /> {a.name}
                 </span>
               ))}
@@ -566,7 +719,17 @@ function SummaryStep({ draft, limited, onEdit }: { draft: TicketDraft; limited: 
   );
 }
 
-function Row({ label, children, onEdit, locked }: { label: string; children: ReactNode; onEdit: () => void; locked?: boolean }) {
+function Row({
+  label,
+  children,
+  onEdit,
+  locked,
+}: {
+  label: string;
+  children: ReactNode;
+  onEdit: () => void;
+  locked?: boolean;
+}) {
   return (
     <div className="grid gap-1 px-4 py-3 sm:grid-cols-[160px_1fr_auto] sm:items-start sm:gap-4">
       <dt className="text-xs font-medium text-muted-foreground sm:pt-0.5">{label}</dt>
@@ -577,7 +740,11 @@ function Row({ label, children, onEdit, locked }: { label: string; children: Rea
             <Lock className="size-3" /> Bloqueado
           </span>
         ) : (
-          <button type="button" onClick={onEdit} className="cursor-pointer text-xs font-medium text-primary hover:underline">
+          <button
+            type="button"
+            onClick={onEdit}
+            className="cursor-pointer text-xs font-medium text-primary hover:underline"
+          >
             Editar
           </button>
         )}

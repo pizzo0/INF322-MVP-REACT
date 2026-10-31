@@ -4,7 +4,13 @@ import { useMemo, useState } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AppShell, PageHeader } from "@/components/usm/app-shell";
 import { TicketRow } from "@/components/usm/ticket-card";
 import { TicketDetailDialog } from "@/components/usm/ticket-detail-dialog";
@@ -23,9 +29,15 @@ export const Route = createFileRoute("/tickets/")({
   head: () => ({
     meta: [
       { title: "Mis tickets | USM Denuncia" },
-      { name: "description", content: "Revisa el estado, responsable y seguimiento de tus tickets." },
+      {
+        name: "description",
+        content: "Revisa el estado, responsable y seguimiento de tus tickets.",
+      },
       { property: "og:title", content: "Mis tickets" },
-      { property: "og:description", content: "Revisa el estado, responsable y seguimiento de tus tickets." },
+      {
+        property: "og:description",
+        content: "Revisa el estado, responsable y seguimiento de tus tickets.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -69,8 +81,10 @@ function TicketsPage() {
       if (status !== "todos" && t.status !== status) return false;
       if (type !== "todos" && t.type !== type) return false;
       if (assignee === "sin-asignar" && t.assignee) return false;
-      if (assignee !== "todos" && assignee !== "sin-asignar" && t.assignee?.name !== assignee) return false;
-      if (term && !`${t.title} ${t.code} ${t.assignee?.name ?? ""}`.toLowerCase().includes(term)) return false;
+      if (assignee !== "todos" && assignee !== "sin-asignar" && t.assignee?.name !== assignee)
+        return false;
+      if (term && !`${t.title} ${t.code} ${t.assignee?.name ?? ""}`.toLowerCase().includes(term))
+        return false;
       return true;
     });
     const sorted = [...filtered];
@@ -81,7 +95,10 @@ function TicketsPage() {
         case "actualizados":
           return b.updatedAt - a.updatedAt;
         case "estado":
-          return STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status) || b.createdAt - a.createdAt;
+          return (
+            STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status) ||
+            b.createdAt - a.createdAt
+          );
         case "titulo":
           return a.title.localeCompare(b.title, "es");
         default:
@@ -115,11 +132,20 @@ function TicketsPage() {
             onClick={() => setStatus(s)}
             className={cn(
               "inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-colors",
-              status === s ? "border-primary bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground",
+              status === s
+                ? "border-primary bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:text-foreground",
             )}
           >
             {s === "todos" ? "Todos" : STATUS_LABEL[s]}
-            <span className={cn("text-xs tabular", status === s ? "text-primary-foreground/70" : "text-muted-foreground")}>{counts[s]}</span>
+            <span
+              className={cn(
+                "text-xs tabular",
+                status === s ? "text-primary-foreground/70" : "text-muted-foreground",
+              )}
+            >
+              {counts[s]}
+            </span>
           </button>
         ))}
       </div>
@@ -127,7 +153,12 @@ function TicketsPage() {
       <div className="mb-6 grid gap-2 rounded-2xl border bg-card p-2 shadow-soft md:grid-cols-[1fr_auto_auto_auto]">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por título, código o responsable" className="h-10 border-0 pl-9 shadow-none focus-visible:ring-0" />
+          <Input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Buscar por título, código o responsable"
+            className="h-10 border-0 pl-9 shadow-none focus-visible:ring-0"
+          />
         </div>
         <Select value={type} onValueChange={(v) => setType(v as TicketType | "todos")}>
           <SelectTrigger className="h-10 md:w-44" aria-label="Filtrar por tipo">
@@ -192,9 +223,13 @@ function TicketsPage() {
 
       {list.length === 0 ? (
         <div className="rounded-2xl border border-dashed bg-card px-6 py-14 text-center">
-          <p className="font-medium">{mine.length ? "No hay tickets que coincidan" : "Aún no has creado tickets"}</p>
+          <p className="font-medium">
+            {mine.length ? "No hay tickets que coincidan" : "Aún no has creado tickets"}
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mine.length ? "Prueba con otros filtros o términos de búsqueda." : "Crea tu primer ticket para comenzar a darle seguimiento."}
+            {mine.length
+              ? "Prueba con otros filtros o términos de búsqueda."
+              : "Crea tu primer ticket para comenzar a darle seguimiento."}
           </p>
         </div>
       ) : (
@@ -205,7 +240,11 @@ function TicketsPage() {
         </div>
       )}
 
-      <TicketDetailDialog ticketId={openId ?? null} onClose={() => open(null)} onOpenTicket={(id) => open(id)} />
+      <TicketDetailDialog
+        ticketId={openId ?? null}
+        onClose={() => open(null)}
+        onOpenTicket={(id) => open(id)}
+      />
     </div>
   );
 }

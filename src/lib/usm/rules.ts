@@ -71,16 +71,21 @@ export function isValidEmail(value: string): boolean {
   return EMAIL_RE.test(value.trim());
 }
 
-export type DraftErrors = Partial<Record<"type" | "categoryId" | "campus" | "title" | "description" | "onBehalfOf", string>>;
+export type DraftErrors = Partial<
+  Record<"type" | "categoryId" | "campus" | "title" | "description" | "onBehalfOf", string>
+>;
 
 export function validateDraft(d: TicketDraft): DraftErrors {
   const e: DraftErrors = {};
   if (!d.type) e.type = "Selecciona el tipo de problema.";
-  if (!d.categoryId || getCategory(d.categoryId)?.type !== d.type) e.categoryId = "Selecciona una categoría.";
+  if (!d.categoryId || getCategory(d.categoryId)?.type !== d.type)
+    e.categoryId = "Selecciona una categoría.";
   if (!d.location.campus.trim()) e.campus = "El campus es obligatorio.";
   if (d.title.trim().length < 5) e.title = "El título debe tener al menos 5 caracteres.";
-  if (d.description.trim().length < 10) e.description = "Describe el problema con al menos 10 caracteres.";
-  if (d.onBehalfOf.trim() && !isValidEmail(d.onBehalfOf)) e.onBehalfOf = "Ingresa un correo válido.";
+  if (d.description.trim().length < 10)
+    e.description = "Describe el problema con al menos 10 caracteres.";
+  if (d.onBehalfOf.trim() && !isValidEmail(d.onBehalfOf))
+    e.onBehalfOf = "Ingresa un correo válido.";
   return e;
 }
 
@@ -134,7 +139,11 @@ export function diffDraft(before: TicketDraft, after: TicketDraft, at: number): 
     if (from !== to) out.push({ id: uid("h"), at, field, from: from || "—", to: to || "—" });
   };
   push("Tipo de problema", typeLabel(before.type), typeLabel(after.type));
-  push("Categoría", getCategory(before.categoryId)?.name ?? "", getCategory(after.categoryId)?.name ?? "");
+  push(
+    "Categoría",
+    getCategory(before.categoryId)?.name ?? "",
+    getCategory(after.categoryId)?.name ?? "",
+  );
   push("Ubicación", fmtLocation(before.location), fmtLocation(after.location));
   push("Título", before.title, after.title);
   push("Descripción", before.description, after.description);
@@ -158,11 +167,19 @@ export const STATUS_LABEL: Record<TicketStatus, string> = {
   cerrada: "Cerrada",
 };
 
-export const STATUS_ORDER: TicketStatus[] = ["nueva", "asignada", "resuelta", "rechazada", "cerrada"];
+export const STATUS_ORDER: TicketStatus[] = [
+  "nueva",
+  "asignada",
+  "resuelta",
+  "rechazada",
+  "cerrada",
+];
 
 export function pickAssignee(t: Pick<Ticket, "categoryId" | "seq">): Contact {
   const team = getCategory(t.categoryId)?.team ?? "mesa";
-  const pool = CONTACTS.filter((c) => c.team === team && !c.role.startsWith("Jefa") && !c.role.startsWith("Coordinadora"));
+  const pool = CONTACTS.filter(
+    (c) => c.team === team && !c.role.startsWith("Jefa") && !c.role.startsWith("Coordinadora"),
+  );
   const list = pool.length ? pool : CONTACTS;
   return list[t.seq % list.length] ?? CONTACTS[0]!;
 }
@@ -198,7 +215,10 @@ export function advanceTicket(input: Ticket, now: number): AdvanceResult {
         assignee: who,
         assignedAt: at,
         updatedAt: at,
-        timeline: [...t.timeline, { id: uid("e"), kind: "asignada", at, description: `Asignado a ${who.name}.` }],
+        timeline: [
+          ...t.timeline,
+          { id: uid("e"), kind: "asignada", at, description: `Asignado a ${who.name}.` },
+        ],
         comments: [
           ...t.comments,
           {
@@ -233,14 +253,25 @@ export function advanceTicket(input: Ticket, now: number): AdvanceResult {
             id: uid("e"),
             kind: outcome,
             at,
-            description: outcome === "resuelta" ? "El responsable marcó el ticket como resuelto." : "El responsable rechazó el ticket.",
+            description:
+              outcome === "resuelta"
+                ? "El responsable marcó el ticket como resuelto."
+                : "El responsable rechazó el ticket.",
           },
         ],
       };
-      notify(at, outcome === "resuelta" ? "Ticket resuelto" : "Ticket rechazado", `“${t.title}” fue ${outcome}.`);
+      notify(
+        at,
+        outcome === "resuelta" ? "Ticket resuelto" : "Ticket rechazado",
+        `“${t.title}” fue ${outcome}.`,
+      );
       continue;
     }
-    if ((t.status === "resuelta" || t.status === "rechazada") && t.resolution && now >= t.resolution.at + CLOSE_AFTER_MS) {
+    if (
+      (t.status === "resuelta" || t.status === "rechazada") &&
+      t.resolution &&
+      now >= t.resolution.at + CLOSE_AFTER_MS
+    ) {
       const at = t.resolution.at + CLOSE_AFTER_MS;
       t = {
         ...t,
@@ -248,7 +279,10 @@ export function advanceTicket(input: Ticket, now: number): AdvanceResult {
         closedAt: at,
         closedReason: "automatico",
         updatedAt: at,
-        timeline: [...t.timeline, { id: uid("e"), kind: "cerrada", at, description: "El ticket se cerró automáticamente." }],
+        timeline: [
+          ...t.timeline,
+          { id: uid("e"), kind: "cerrada", at, description: "El ticket se cerró automáticamente." },
+        ],
       };
       notify(at, "Ticket cerrado", `“${t.title}” fue cerrado. Puedes reabrirlo si lo necesitas.`);
       continue;
@@ -260,8 +294,10 @@ export function advanceTicket(input: Ticket, now: number): AdvanceResult {
 
 /** Next simulated milestone for a ticket, if any. */
 export function nextMilestone(t: Ticket): { label: string; at: number } | null {
-  if (t.status === "nueva") return { label: "Asignación estimada", at: t.createdAt + ASSIGN_AFTER_MS };
-  if (t.status === "asignada" && t.assignedAt) return { label: "Respuesta estimada", at: t.assignedAt + RESOLVE_AFTER_MS };
+  if (t.status === "nueva")
+    return { label: "Asignación estimada", at: t.createdAt + ASSIGN_AFTER_MS };
+  if (t.status === "asignada" && t.assignedAt)
+    return { label: "Respuesta estimada", at: t.assignedAt + RESOLVE_AFTER_MS };
   if ((t.status === "resuelta" || t.status === "rechazada") && t.resolution)
     return { label: "Cierre automático", at: t.resolution.at + CLOSE_AFTER_MS };
   return null;
