@@ -16,7 +16,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-primary-gradient text-primary-foreground shadow-glow hover:brightness-110 active:brightness-95",
+        hero: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/90",
         microsoft:
           "border border-input bg-card text-foreground shadow-soft hover:bg-accent hover:border-ring/40",
         nav: "text-muted-foreground hover:bg-accent hover:text-foreground data-[active=true]:text-foreground data-[active=true]:bg-accent",

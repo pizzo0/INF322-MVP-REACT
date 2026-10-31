@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MicrosoftLogo, Wordmark } from "@/components/usm/brand";
 import { signInWithMicrosoft, useHydrated, useSession } from "@/lib/usm/store";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -31,13 +30,11 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-type Portal = "comunidad" | "soporte";
 
 function LoginPage() {
   const hydrated = useHydrated();
   const session = useSession();
   const navigate = useNavigate();
-  const [portal, setPortal] = useState<Portal>("comunidad");
   const [loading, setLoading] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
 
@@ -90,44 +87,31 @@ function LoginPage() {
             <Wordmark />
           </div>
           <h2 className="text-3xl font-semibold">Ingresar</h2>
-          <p className="mt-2 text-muted-foreground">Selecciona cómo quieres acceder a la plataforma.</p>
+          <p className="mt-2 text-muted-foreground">Elige la forma de acceso que corresponda a tu cuenta.</p>
 
-          <div role="radiogroup" aria-label="Tipo de acceso" className="mt-8 grid gap-3">
-            <PortalOption
-              selected={portal === "comunidad"}
-              onClick={() => setPortal("comunidad")}
+          <div className="mt-8 grid gap-4">
+            <PortalCard
               icon={<Users className="size-5" />}
               title="Comunidad USM"
               description="Estudiantes, docentes, funcionarios y toda persona con cuenta @usm.cl."
-            />
-            <PortalOption
-              selected={portal === "soporte"}
-              onClick={() => setPortal("soporte")}
-              icon={<Headset className="size-5" />}
-              title="Soporte y administración"
-              description="Equipos de atención y administradores de la plataforma."
-            />
-          </div>
-
-          <div className="mt-6">
-            {portal === "comunidad" ? (
+              note="Usarás tu cuenta institucional. No almacenamos tu contraseña."
+            >
               <Button variant="microsoft" size="xl" className="w-full" onClick={microsoft} disabled={loading}>
                 {loading ? <Loader2 className="animate-spin" /> : <MicrosoftLogo />}
                 {loading ? "Conectando con Microsoft 365…" : "Continuar con Microsoft 365"}
               </Button>
-            ) : (
+            </PortalCard>
+            <PortalCard
+              icon={<Headset className="size-5" />}
+              title="Soporte y administración"
+              description="Equipos de atención y administradores de la plataforma."
+              note="Acceso restringido al personal autorizado."
+            >
               <Button variant="hero" size="xl" className="w-full" onClick={() => setManualOpen(true)}>
                 Ingresar manualmente <ArrowRight />
               </Button>
-            )}
+            </PortalCard>
           </div>
-
-          <p className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <ShieldCheck className="size-3.5" />
-            {portal === "comunidad"
-              ? "Usarás tu cuenta institucional. No almacenamos tu contraseña."
-              : "Acceso restringido al personal autorizado."}
-          </p>
         </div>
       </main>
 
@@ -136,51 +120,35 @@ function LoginPage() {
   );
 }
 
-function PortalOption({
-  selected,
-  onClick,
+function PortalCard({
   icon,
   title,
   description,
+  note,
+  children,
 }: {
-  selected: boolean;
-  onClick: () => void;
   icon: ReactNode;
   title: string;
   description: string;
+  note: string;
+  children: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={selected}
-      onClick={onClick}
-      className={cn(
-        "flex w-full cursor-pointer items-start gap-4 rounded-xl border bg-card p-4 text-left shadow-soft transition-all hover:border-ring/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        selected && "border-primary ring-1 ring-primary",
-      )}
-    >
-      <span
-        className={cn(
-          "flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors",
-          selected ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
-        )}
-      >
-        {icon}
-      </span>
-      <span className="flex-1">
-        <span className="block font-medium">{title}</span>
-        <span className="mt-0.5 block text-sm text-muted-foreground">{description}</span>
-      </span>
-      <span
-        className={cn(
-          "mt-1 flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors",
-          selected ? "border-primary bg-primary text-primary-foreground" : "border-input",
-        )}
-      >
-        {selected && <Check className="size-3" />}
-      </span>
-    </button>
+    <section className="rounded-xl border bg-card p-4 shadow-soft">
+      <div className="flex items-start gap-4">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+          {icon}
+        </span>
+        <div className="flex-1">
+          <h3 className="font-sans text-base font-medium tracking-normal">{title}</h3>
+          <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
+      <div className="mt-4">{children}</div>
+      <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+        <ShieldCheck className="size-3.5" /> {note}
+      </p>
+    </section>
   );
 }
 
