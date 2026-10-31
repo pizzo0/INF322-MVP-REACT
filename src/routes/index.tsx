@@ -10,9 +10,9 @@ import { useSession, useTickets } from "@/lib/usm/store";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Inicio · USM Denuncia" },
+      { title: "Página Principal | USM Denuncia" },
       { name: "description", content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos." },
-      { property: "og:title", content: "Inicio · USM Denuncia" },
+      { property: "og:title", content: "Página Principal" },
       { property: "og:description", content: "Crea un ticket y revisa el estado de tus incidencias y requerimientos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

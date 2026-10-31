@@ -22,9 +22,9 @@ export function LogoMark({ className }: { className?: string }) {
 export function Wordmark({ className, inverted }: { className?: string; inverted?: boolean }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <LogoMark />
+      {/* <LogoMark /> */}
       <span className={cn("font-display text-[17px] font-semibold tracking-tight", inverted ? "text-ink-foreground" : "text-foreground")}>
-        USM <span className={inverted ? "text-ink-foreground/70" : "text-primary"}>Denuncia</span>
+        USM Denuncia
       </span>
     </span>
   );

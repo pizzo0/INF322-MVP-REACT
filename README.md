@@ -2,10 +2,10 @@
 
 This project was built with [Lovable](https://lovable.dev).
 
-# DEPENDENCIAS
+## DEPENDENCIAS
 
 - [Docker](https://www.docker.com/)
 
-# URLs
+## URLs
 
 - React: http://localhost:8080/

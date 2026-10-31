@@ -14,9 +14,9 @@ import type { Ticket } from "@/lib/usm/types";
 export const Route = createFileRoute("/tickets/$ticketId/editar")({
   head: () => ({
     meta: [
-      { title: "Editar ticket · USM Denuncia" },
+      { title: "Editar ticket | USM Denuncia" },
       { name: "description", content: "Modifica o reabre uno de tus tickets." },
-      { property: "og:title", content: "Editar ticket · USM Denuncia" },
+      { property: "og:title", content: "Editar ticket" },
       { property: "og:description", content: "Modifica o reabre uno de tus tickets." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

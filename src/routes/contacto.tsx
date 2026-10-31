@@ -9,9 +9,9 @@ import { initials } from "@/lib/usm/format";
 export const Route = createFileRoute("/contacto")({
   head: () => ({
     meta: [
-      { title: "Contacto · USM Denuncia" },
+      { title: "Contacto | USM Denuncia" },
       { name: "description", content: "Equipos y personas responsables de atender los tickets de la plataforma." },
-      { property: "og:title", content: "Contacto · USM Denuncia" },
+      { property: "og:title", content: "Contacto" },
       { property: "og:description", content: "Equipos y personas responsables de atender los tickets de la plataforma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

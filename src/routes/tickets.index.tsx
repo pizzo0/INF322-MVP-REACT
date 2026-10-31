@@ -22,9 +22,9 @@ export const Route = createFileRoute("/tickets/")({
     typeof s["ticket"] === "string" ? { ticket: s["ticket"] } : {},
   head: () => ({
     meta: [
-      { title: "Mis tickets · USM Denuncia" },
+      { title: "Mis tickets | USM Denuncia" },
       { name: "description", content: "Revisa el estado, responsable y seguimiento de tus tickets." },
-      { property: "og:title", content: "Mis tickets · USM Denuncia" },
+      { property: "og:title", content: "Mis tickets" },
       { property: "og:description", content: "Revisa el estado, responsable y seguimiento de tus tickets." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

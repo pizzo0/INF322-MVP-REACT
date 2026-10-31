@@ -10,9 +10,9 @@ import { createTicket, useSession } from "@/lib/usm/store";
 export const Route = createFileRoute("/tickets/nuevo")({
   head: () => ({
     meta: [
-      { title: "Crear ticket · USM Denuncia" },
+      { title: "Crear ticket | USM Denuncia" },
       { name: "description", content: "Reporta una incidencia o realiza un requerimiento paso a paso." },
-      { property: "og:title", content: "Crear ticket · USM Denuncia" },
+      { property: "og:title", content: "Crear ticket" },
       { property: "og:description", content: "Reporta una incidencia o realiza un requerimiento paso a paso." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -34,16 +34,10 @@ function NewTicket() {
         <ChevronLeft className="size-4" /> Mis tickets
       </Link>
       <PageHeader
-        eyebrow="Nuevo ticket"
+        eyebrow="Tickets"
         title="Crear ticket"
         description="Completa los pasos para reportar tu caso. Puedes volver atrás en cualquier momento."
       />
-      <div className="mb-8 flex items-center gap-3 rounded-xl border bg-card px-4 py-3 text-sm shadow-soft">
-        <Clock3 className="size-4 shrink-0 text-primary" />
-        <span className="text-muted-foreground">
-          Una vez creado, tu ticket será asignado a un responsable en un mínimo de 5 minutos.
-        </span>
-      </div>
       <TicketWizard
         mode="crear"
         initial={emptyDraft()}
