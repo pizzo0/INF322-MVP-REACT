@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertCircle, ArrowRight, Check, Headset, Loader2, ShieldCheck, Users } from "lucide-react";
+import { AlertCircle, ArrowRight, Check, Eye, EyeOff, Headset, Loader2, ShieldCheck, Users } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -157,12 +157,14 @@ function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (!open) {
       setPassword("");
       setError(false);
       setLoading(false);
+      setShowPassword(false);
     }
   }, [open]);
 
@@ -170,8 +172,8 @@ function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[420px] sm:rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="font-display text-xl">Soporte y administración</DialogTitle>
-          <DialogDescription>Ingresa con las credenciales entregadas por la coordinación de la plataforma.</DialogDescription>
+          <DialogTitle className="font-display text-xl">Ingreso con cuenta manual</DialogTitle>
+          <DialogDescription>Exclusivo para personal de soporte y administración.</DialogDescription>
         </DialogHeader>
         <form
           className="space-y-4"
@@ -193,11 +195,32 @@ function ManualLoginDialog({ open, onOpenChange }: { open: boolean; onOpenChange
           )}
           <div>
             <Label htmlFor="admin-email">Correo</Label>
-            <Input id="admin-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nombre@usm.cl" className="mt-1.5 h-11" />
+            <Input id="admin-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5 h-11" />
           </div>
           <div>
             <Label htmlFor="admin-password">Contraseña</Label>
-            <Input id="admin-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5 h-11" />
+            <div className="relative mt-1.5">
+              <Input
+                id="admin-password"
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-11 pr-11"
+                aria-describedby="admin-password-help"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
+            <p id="admin-password-help" className="mt-1.5 text-xs text-muted-foreground">
+              La contraseña distingue entre mayúsculas y minúsculas.
+            </p>
           </div>
           <DialogFooter className="gap-2 pt-2 sm:gap-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
