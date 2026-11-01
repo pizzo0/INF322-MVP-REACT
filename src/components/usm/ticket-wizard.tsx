@@ -116,7 +116,7 @@ export function TicketWizard({
   const err = (k: keyof DraftErrors) => (showErrors ? errors[k] : undefined);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
+    <div className="grid grid-rows-[auto_minmax(0,1fr)] lg:grid-rows-1 lg:grid-cols-[240px_1fr] gap-8 min-h-0 my-auto pb-9">
       <ol className="flex gap-2 overflow-x-auto lg:sticky lg:top-24 lg:flex-col lg:self-start">
         {steps.map((s, i) => {
           const active = i === index;
@@ -157,16 +157,16 @@ export function TicketWizard({
         })}
       </ol>
 
-      <div className="min-w-0">
-        <div className="rounded-2xl border bg-card shadow-soft">
-          <div className="border-b px-6 py-5 sm:px-8">
+      <div className="flex flex-col">
+        <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border bg-card shadow-soft">
+          <div className="shrink-0 border-b px-6 py-5 sm:px-8">
             <p className="text-xs font-medium text-muted-foreground">
               Paso {index + 1} de {steps.length}
             </p>
             <h2 className="mt-1 text-xl font-semibold">{STEP_META[step].label}</h2>
           </div>
 
-          <div key={step} className="animate-rise px-6 py-6 sm:px-8">
+          <div key={step} className="min-h-0 flex-1 overflow-y-auto animate-rise px-6 py-6 sm:px-8">
             {limited && step === "detalles" && (
               <Notice icon={<Lock className="size-4" />}>
                 {mode === "reabrir"
@@ -207,7 +207,7 @@ export function TicketWizard({
             {step === "resumen" && <SummaryStep draft={draft} limited={limited} onEdit={jumpTo} />}
           </div>
 
-          <div className="flex items-center justify-between gap-3 border-t bg-muted/30 px-6 py-4 sm:px-8">
+          <div className="flex shrink-0 items-center justify-between gap-3 border-t bg-muted/30 px-6 py-4 sm:px-8">
             <Button variant="ghost" onClick={goBack}>
               <ArrowLeft /> {index === 0 ? "Cancelar" : "Atrás"}
             </Button>
@@ -361,7 +361,7 @@ function CategoryStep({
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar categoría"
-            className="pl-9"
+            className="pl-9 text-sm"
           />
         </div>
       </div>

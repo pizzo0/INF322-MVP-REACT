@@ -35,18 +35,18 @@ function NewTicket() {
   const session = useSession();
   const navigate = useNavigate();
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
+    <div className="h-[calc(100dvh-4rem)] min-h-0 flex flex-col mx-auto max-w-6xl px-4 pt-8 pb-8 sm:px-6">
       <Link
         to="/tickets"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground w-fit"
       >
         <ChevronLeft className="size-4" /> Mis tickets
       </Link>
-      <PageHeader
+      {/* <PageHeader
         eyebrow="Tickets"
         title="Crear ticket"
-        description="Completa los pasos para reportar tu caso. Puedes volver atrás en cualquier momento."
-      />
+        // description="Completa los pasos para reportar tu caso. Puedes volver atrás en cualquier momento."
+      /> */}
       <TicketWizard
         mode="crear"
         initial={emptyDraft()}

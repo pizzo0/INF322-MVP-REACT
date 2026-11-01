@@ -67,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
+        <div className="mx-auto flex h-[70px] max-w-6xl items-center gap-2 px-4 sm:px-6">
           <MobileNav />
           <Link
             to="/"
@@ -117,6 +117,32 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="nav"
+                  size="sm"
+                  className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground"
+                >
+                  Sitios de Interés
+                  <ChevronDown className="transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-60 p-1.5">
+                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
+                  <Link to="https://usm.cl/sitios-academicos/">
+                    <span className="text-sm font-medium">Sitios Académicos</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
+                  <Link to="https://usm.cl/sitios-administrativos/">
+                    <span className="text-sm font-medium">Sitios Administrativos</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button variant="nav" size="sm" asChild>
               <Link to="/contacto" activeProps={{ "data-active": "true" }}>
                 Contacto
@@ -130,7 +156,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
-      <main className="animate-rise">{children}</main>
+      <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
       <footer className="mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6">
         USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
       </footer>
@@ -214,7 +240,7 @@ function NotificationsMenu() {
             <p className="text-sm text-muted-foreground">Aún no tienes notificaciones.</p>
           </div>
         ) : (
-          <ScrollArea className="max-h-[420px]">
+          <div className="max-h-[420px] overflow-y-scroll">
             <ul className="divide-y">
               {notifications.slice(0, 40).map((n) => (
                 <li key={n.id}>
@@ -253,7 +279,7 @@ function NotificationsMenu() {
                 </li>
               ))}
             </ul>
-          </ScrollArea>
+          </div>
         )}
       </PopoverContent>
     </Popover>

@@ -155,7 +155,7 @@ function PortalCard({
   icon: ReactNode;
   title: string;
   description: string;
-  note: string;
+  note?: string;
   children: ReactNode;
 }) {
   return (

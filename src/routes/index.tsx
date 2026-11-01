@@ -92,7 +92,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 w-full">
         <div className="mb-4 flex items-end justify-between">
           <div>
             <h2 className="text-xl font-semibold">Actividad reciente</h2>
