@@ -36,8 +36,9 @@ function Home() {
   const tickets = useTickets();
   const [open, setOpen] = useState<string | null>(null);
   const mine = tickets.filter((t) => t.ownerEmail === session?.email);
-  const active = mine.filter((t) => t.status === "nueva" || t.status === "asignada").length;
-  const answered = mine.filter((t) => t.status === "resuelta" || t.status === "rechazada").length;
+  const active = mine.filter((t) => t.status === "asignada").length;
+  const answered = mine.filter((t) => t.status === "resuelta").length;
+  const rejected = mine.filter((t) => t.status === "rechazada").length;
   const closed = mine.filter((t) => t.status === "cerrada").length;
   const recent = [...mine].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 5);
 
@@ -78,9 +79,10 @@ function Home() {
                 <Inbox className="size-5" />
               </span>
               <p className="mt-6 font-display text-2xl font-semibold">Mis tickets</p>
-              <div className="mt-3 grid grid-cols-3 gap-3">
-                <Stat value={active} label="En curso" tone="text-status-assigned" />
-                <Stat value={answered} label="Respondidos" tone="text-status-resolved" />
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <Stat value={active} label="Asignados" tone="text-status-assigned" />
+                <Stat value={answered} label="Resueltos" tone="text-status-resolved" />
+                <Stat value={rejected} label="Rechazados" tone="text-status-rejected" />
                 <Stat value={closed} label="Cerrados" tone="text-status-closed" />
               </div>
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary">

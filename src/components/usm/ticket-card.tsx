@@ -30,6 +30,9 @@ export function TicketRow({
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-xs font-medium text-muted-foreground">{ticket.code}</span>
           <StatusBadge status={ticket.status} />
+          {ticket.status === "cerrada" && ticket.resolution && (
+            <StatusBadge status={ticket.resolution.outcome} />
+          )}
           {ticket.reopenedFrom && <ReopenedBadge />}
         </div>
         <p className="mt-1.5 truncate text-[15px] font-medium text-foreground">{ticket.title}</p>
