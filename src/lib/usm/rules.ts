@@ -160,7 +160,7 @@ export function typeLabel(t: TicketType | null | undefined): string {
 }
 
 export const STATUS_LABEL: Record<TicketStatus, string> = {
-  nueva: "Nueva",
+  nueva: "Nuevo",
   asignada: "Asignada",
   resuelta: "Resuelta",
   rechazada: "Rechazada",
