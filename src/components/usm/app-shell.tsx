@@ -131,14 +131,14 @@ export function AppShell({ children }: { children: ReactNode }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-60 p-1.5">
                 <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <Link to="https://usm.cl/sitios-academicos/">
+                  <a href="https://usm.cl/sitios-academicos/" target="_blank" rel="noreferrer">
                     <span className="text-sm font-medium">Sitios Académicos</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <Link to="https://usm.cl/sitios-administrativos/">
+                  <a href="https://usm.cl/sitios-administrativos/" target="_blank" rel="noreferrer">
                     <span className="text-sm font-medium">Sitios Administrativos</span>
-                  </Link>
+                  </a>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
