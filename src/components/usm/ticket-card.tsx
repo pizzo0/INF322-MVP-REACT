@@ -2,10 +2,26 @@ import { ArrowUpRight, UserRound } from "lucide-react";
 
 import { ReopenedBadge, StatusBadge } from "@/components/usm/status-badge";
 import { getCategory } from "@/lib/usm/catalog";
-import { timeAgo } from "@/lib/usm/format";
+import { dateTime, timeAgo } from "@/lib/usm/format";
 import { typeLabel } from "@/lib/usm/rules";
 import type { Ticket } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
+
+/** Creation date, then assignment (replaced by the resolution once answered), then closing. */
+function ticketDates(t: Ticket): { label: string; at: number }[] {
+  const out = [{ label: "Creado", at: t.createdAt }];
+  if (t.resolution) {
+    out.push({
+      label: t.resolution.outcome === "resuelta" ? "Resuelto" : "Rechazado",
+      at: t.resolution.at,
+    });
+  } else if (t.assignedAt) {
+    out.push({ label: "Asignado", at: t.assignedAt });
+  }
+  if (t.closedAt) out.push({ label: "Cerrado", at: t.closedAt });
+  return out;
+}
+
 
 export function TicketRow({
   ticket,
@@ -30,9 +46,6 @@ export function TicketRow({
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-xs font-medium text-muted-foreground">{ticket.code}</span>
           <StatusBadge status={ticket.status} />
-          {ticket.status === "cerrada" && ticket.resolution && (
-            <StatusBadge status={ticket.resolution.outcome} />
-          )}
           {ticket.reopenedFrom && <ReopenedBadge />}
         </div>
         <p className="mt-1.5 truncate text-[15px] font-medium text-foreground">{ticket.title}</p>
@@ -40,6 +53,14 @@ export function TicketRow({
           {typeLabel(ticket.type)} · {category?.name ?? "Sin categoría"} · actualizado{" "}
           {timeAgo(ticket.updatedAt)}
         </p>
+        <dl className="mt-2 grid gap-0.5 text-xs text-muted-foreground">
+          {ticketDates(ticket).map((d) => (
+            <div key={d.label} className="flex gap-1.5">
+              <dt className="w-20 shrink-0">{d.label}</dt>
+              <dd className="tabular text-foreground/80">{dateTime(d.at)}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
       <div className="flex items-center justify-between gap-4 sm:justify-end">
         <div className="flex items-center gap-2 text-sm">
