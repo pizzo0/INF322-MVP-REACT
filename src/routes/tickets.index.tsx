@@ -60,6 +60,7 @@ function TicketsPage() {
 
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<TicketStatus | "todos">("todos");
+  const [reopened, setReopened] = useState(false);
   const [type, setType] = useState<TicketType | "todos">("todos");
   const [assignee, setAssignee] = useState<string>("todos");
   const [sort, setSort] = useState<Sort>("recientes");
@@ -70,7 +71,10 @@ function TicketsPage() {
   );
 
   const counts = useMemo(() => {
-    const c: Record<string, number> = { todos: mine.length };
+    const c: Record<string, number> = {
+      todos: mine.length,
+      reabierto: mine.filter((t) => t.reopenedFrom).length,
+    };
     STATUS_ORDER.forEach((s) => (c[s] = mine.filter((t) => t.status === s).length));
     return c;
   }, [mine]);
@@ -79,6 +83,7 @@ function TicketsPage() {
     const term = q.trim().toLowerCase();
     const filtered = mine.filter((t) => {
       if (status !== "todos" && t.status !== status) return false;
+      if (reopened && !t.reopenedFrom) return false;
       if (type !== "todos" && t.type !== type) return false;
       if (assignee === "sin-asignar" && t.assignee) return false;
       if (assignee !== "todos" && assignee !== "sin-asignar" && t.assignee?.name !== assignee)
@@ -106,15 +111,16 @@ function TicketsPage() {
       }
     });
     return sorted;
-  }, [mine, q, status, type, assignee, sort]);
+  }, [mine, q, status, reopened, type, assignee, sort]);
 
   const [page, setPage] = useState(1);
   const [PAGE_SIZE, setPageSize] = useState(10);
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const safePage = Math.min(page, pages);
-  useEffect(() => setPage(1), [q, status, type, assignee, sort, PAGE_SIZE]);
+  useEffect(() => setPage(1), [q, status, reopened, type, assignee, sort, PAGE_SIZE]);
 
-  const filtersOn = q || status !== "todos" || type !== "todos" || assignee !== "todos";
+  const filtersOn =
+    q || status !== "todos" || reopened || type !== "todos" || assignee !== "todos";
   const open = (id: string | null) => navigate({ search: id ? { ticket: id } : {}, replace: !id });
 
   return (
@@ -131,29 +137,43 @@ function TicketsPage() {
       />
 
       <div className="mb-4 flex gap-1.5 overflow-x-auto pb-1">
-        {(["todos", ...STATUS_ORDER] as const).map((s) => (
-          <button
-            key={s}
-            type="button"
-            onClick={() => setStatus(s)}
-            className={cn(
-              "inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-colors",
-              status === s
-                ? "border-primary bg-primary text-primary-foreground"
-                : "bg-card text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {s === "todos" ? "Todos" : STATUS_LABEL[s]}
-            <span
+        {(["todos", ...STATUS_ORDER, "reabierto"] as const).map((s) => {
+          const active =
+            s === "todos" ? status === "todos" && !reopened : s === "reabierto" ? reopened : status === s;
+          return (
+            <button
+              key={s}
+              type="button"
+              aria-pressed={active}
+              onClick={() => {
+                if (s === "todos") {
+                  setStatus("todos");
+                  setReopened(false);
+                } else if (s === "reabierto") {
+                  setReopened((r) => !r);
+                } else {
+                  setStatus(status === s ? "todos" : s);
+                }
+              }}
               className={cn(
-                "text-xs tabular",
-                status === s ? "text-primary-foreground/70" : "text-muted-foreground",
+                "inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-colors",
+                active
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground",
               )}
             >
-              {counts[s]}
-            </span>
-          </button>
-        ))}
+              {s === "todos" ? "Todos" : s === "reabierto" ? "Reabierto" : STATUS_LABEL[s]}
+              <span
+                className={cn(
+                  "text-xs tabular",
+                  active ? "text-primary-foreground/70" : "text-muted-foreground",
+                )}
+              >
+                {counts[s]}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="mb-6 grid gap-2 rounded-2xl border bg-card p-2 shadow-soft md:grid-cols-[1fr_auto_auto_auto]">
@@ -218,6 +238,7 @@ function TicketsPage() {
             onClick={() => {
               setQ("");
               setStatus("todos");
+              setReopened(false);
               setType("todos");
               setAssignee("todos");
             }}
@@ -245,54 +266,58 @@ function TicketsPage() {
               <TicketRow key={t.id} ticket={t} onOpen={open} />
             ))}
           </div>
-          {
-            <nav aria-label="Paginación" className="mt-6 flex items-center justify-between gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={safePage === 1}
-                onClick={() => setPage(safePage - 1)}
-              >
-                <ChevronLeft /> Anterior
-              </Button>
+          <nav aria-label="Paginación" className="mt-6 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
-                {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-                  <Button
-                    key={n}
-                    variant={n === safePage ? "default" : "ghost"}
-                    size="sm"
-                    className="w-9 tabular"
-                    aria-current={n === safePage ? "page" : undefined}
-                    onClick={() => setPage(n)}
-                  >
-                    {n}
-                  </Button>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
-                  <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[5, 10, 15, 20].map((n) => (
-                      <SelectItem key={n} value={String(n)}>
-                        {n}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="icon"
+                  className="size-9"
+                  aria-label="Página anterior"
+                  disabled={safePage === 1}
+                  onClick={() => setPage(safePage - 1)}
+                >
+                  <ChevronLeft />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-9"
+                  aria-label="Página siguiente"
                   disabled={safePage === pages}
                   onClick={() => setPage(safePage + 1)}
                 >
-                  Siguiente <ChevronRight />
+                  <ChevronRight />
                 </Button>
               </div>
-            </nav>
-          }
+              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
+                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[5, 10, 15, 20].map((n) => (
+                    <SelectItem key={n} value={String(n)}>
+                      {n}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                <Button
+                  key={n}
+                  variant={n === safePage ? "default" : "ghost"}
+                  size="sm"
+                  className="w-9 tabular"
+                  aria-current={n === safePage ? "page" : undefined}
+                  onClick={() => setPage(n)}
+                >
+                  {n}
+                </Button>
+              ))}
+            </div>
+          </nav>
         </>
       )}
 
