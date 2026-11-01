@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, FilePlus2, Search, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-const PAGE_SIZE = 10;
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -111,9 +110,10 @@ function TicketsPage() {
   }, [mine, q, status, type, assignee, sort]);
 
   const [page, setPage] = useState(1);
+  const [PAGE_SIZE, setPageSize] = useState(10);
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const safePage = Math.min(page, pages);
-  useEffect(() => setPage(1), [q, status, type, assignee, sort]);
+  useEffect(() => setPage(1), [q, status, type, assignee, sort, PAGE_SIZE]);
 
   const filtersOn = q || status !== "todos" || type !== "todos" || assignee !== "todos";
   const open = (id: string | null) => navigate({ search: id ? { ticket: id } : {}, replace: !id });
@@ -246,7 +246,7 @@ function TicketsPage() {
               <TicketRow key={t.id} ticket={t} onOpen={open} />
             ))}
           </div>
-          {pages > 1 && (
+          {(
             <nav
               aria-label="Paginación"
               className="mt-6 flex items-center justify-between gap-3"
@@ -273,6 +273,19 @@ function TicketsPage() {
                   </Button>
                 ))}
               </div>
+              <div className="flex items-center gap-2">
+              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
+                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[5, 10, 15, 20].map((n) => (
+                    <SelectItem key={n} value={String(n)}>
+                      {n}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Button
                 variant="outline"
                 size="sm"
@@ -281,6 +294,7 @@ function TicketsPage() {
               >
                 Siguiente <ChevronRight />
               </Button>
+              </div>
             </nav>
           )}
         </>
