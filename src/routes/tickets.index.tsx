@@ -176,7 +176,7 @@ function TicketsPage() {
         })}
       </div>
 
-      <div className="mb-6 grid gap-2 rounded-2xl border bg-card p-2 shadow-soft md:grid-cols-[1fr_auto_auto_auto]">
+      <div className="mb-4 grid gap-2 rounded-2xl border bg-card p-2 shadow-soft md:grid-cols-[1fr_auto_auto_auto]">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -261,13 +261,34 @@ function TicketsPage() {
         </div>
       ) : (
         <>
-          <div className="grid gap-2.5">
-            {list.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE).map((t) => (
-              <TicketRow key={t.id} ticket={t} onOpen={open} />
-            ))}
-          </div>
-          <nav aria-label="Paginación" className="mt-6 flex items-center justify-between gap-3">
+          <nav aria-label="Paginación" className="my-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1">
+              {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                <Button
+                  key={n}
+                  variant={n === safePage ? "default" : "ghost"}
+                  size="sm"
+                  className="w-9 tabular"
+                  aria-current={n === safePage ? "page" : undefined}
+                  onClick={() => setPage(n)}
+                >
+                  {n}
+                </Button>
+              ))}
+            </div>
             <div className="flex items-center gap-2">
+              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
+                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[5, 10, 15, 20].map((n) => (
+                    <SelectItem key={n} value={String(n)}>
+                      {n}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <div className="flex items-center gap-1">
                 <Button
                   variant="outline"
@@ -290,19 +311,14 @@ function TicketsPage() {
                   <ChevronRight />
                 </Button>
               </div>
-              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
-                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[5, 10, 15, 20].map((n) => (
-                    <SelectItem key={n} value={String(n)}>
-                      {n}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
+          </nav>
+          <div className="grid gap-2.5">
+            {list.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE).map((t) => (
+              <TicketRow key={t.id} ticket={t} onOpen={open} />
+            ))}
+          </div>
+          <nav aria-label="Paginación" className="mt-6 flex items-center justify-between gap-3">
             <div className="flex items-center gap-1">
               {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
                 <Button
@@ -316,6 +332,42 @@ function TicketsPage() {
                   {n}
                 </Button>
               ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
+                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[5, 10, 15, 20].map((n) => (
+                    <SelectItem key={n} value={String(n)}>
+                      {n}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-9"
+                  aria-label="Página anterior"
+                  disabled={safePage === 1}
+                  onClick={() => setPage(safePage - 1)}
+                >
+                  <ChevronLeft />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-9"
+                  aria-label="Página siguiente"
+                  disabled={safePage === pages}
+                  onClick={() => setPage(safePage + 1)}
+                >
+                  <ChevronRight />
+                </Button>
+              </div>
             </div>
           </nav>
         </>
