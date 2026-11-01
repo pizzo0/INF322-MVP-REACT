@@ -56,20 +56,17 @@ function Home() {
               to="/tickets/nuevo"
               className="group relative overflow-hidden rounded-2xl bg-ink-gradient p-6 text-ink-foreground shadow-lift transition-transform duration-200 hover:-translate-y-0.5"
             >
-              <div className="absolute inset-0 bg-grid opacity-60 [mask-image:linear-gradient(to_left,black,transparent)]" />
-              <div className="relative">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-ink-foreground/10">
-                  <FilePlus2 className="size-5" />
-                </span>
-                <p className="mt-6 font-display text-2xl font-semibold">Crear ticket</p>
-                <p className="mt-1 text-sm text-ink-foreground/70">
-                  Reporta una incidencia o realiza un requerimiento en pocos pasos.
-                </p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium">
-                  Comenzar{" "}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </div>
+              <span className="flex size-11 items-center justify-center rounded-xl bg-ink-foreground/10">
+                <FilePlus2 className="size-5" />
+              </span>
+              <p className="mt-6 font-display text-2xl font-semibold">Crear ticket</p>
+              <p className="mt-1 text-sm text-ink-foreground/70">
+                Reporta una incidencia o realiza un requerimiento en pocos pasos.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium">
+                Comenzar{" "}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
             <Link
               to="/tickets"

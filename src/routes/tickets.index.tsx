@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, FilePlus2, Search, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -246,11 +245,8 @@ function TicketsPage() {
               <TicketRow key={t.id} ticket={t} onOpen={open} />
             ))}
           </div>
-          {(
-            <nav
-              aria-label="Paginación"
-              className="mt-6 flex items-center justify-between gap-3"
-            >
+          {
+            <nav aria-label="Paginación" className="mt-6 flex items-center justify-between gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -274,29 +270,29 @@ function TicketsPage() {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-              <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
-                <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[5, 10, 15, 20].map((n) => (
-                    <SelectItem key={n} value={String(n)}>
-                      {n}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={safePage === pages}
-                onClick={() => setPage(safePage + 1)}
-              >
-                Siguiente <ChevronRight />
-              </Button>
+                <Select value={String(PAGE_SIZE)} onValueChange={(v) => setPageSize(Number(v))}>
+                  <SelectTrigger className="h-9 w-20" aria-label="Tickets por página">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[5, 10, 15, 20].map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={safePage === pages}
+                  onClick={() => setPage(safePage + 1)}
+                >
+                  Siguiente <ChevronRight />
+                </Button>
               </div>
             </nav>
-          )}
+          }
         </>
       )}
 

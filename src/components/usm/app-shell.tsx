@@ -71,11 +71,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <MobileNav />
           <Link
             to="/"
-            className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring h-full flex justify-center items-center"
           >
             <Wordmark />
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 md:flex h-full">
             <Button variant="nav" size="sm" asChild>
               <Link to="/" activeOptions={{ exact: true }} activeProps={{ "data-active": "true" }}>
                 Inicio
@@ -157,8 +157,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
-      <footer className="mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6">
-        USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
+      <footer className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6 bg-">
+        <span>
+          © Universidad Técnica Federico Santa María <br />
+          USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
+        </span>
+        <a className="hover:underline" href="mailto:soporte.denuncia@usm.cl">soporte.denuncia@usm.cl</a>
       </footer>
     </div>
   );
@@ -183,6 +187,14 @@ function MobileNav() {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/tickets/nuevo">Crear ticket</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel className="text-xs text-muted-foreground">Tickets</DropdownMenuLabel>
+        <DropdownMenuItem asChild>
+          <Link to="https://usm.cl/sitios-academicos/">Sitios Académicos</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="https://usm.cl/sitios-administrativos/">Sitios Administrativos</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
@@ -296,7 +308,7 @@ function ProfileMenu({ name, email }: { name: string; email: string }) {
           className="group flex cursor-pointer items-center gap-2.5 rounded-full border border-transparent py-1 pl-1 pr-2.5 transition-colors hover:border-border hover:bg-card data-[state=open]:border-border data-[state=open]:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Abrir menú de perfil"
         >
-          <span className="flex size-8 items-center justify-center rounded-full bg-secondary text-muted-foreground ring-1 ring-border">
+          <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-muted-foreground ring-1 ring-border">
             <UserRound className="size-4" />
           </span>
           <ChevronDown className="size-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
