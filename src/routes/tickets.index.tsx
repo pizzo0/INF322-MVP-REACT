@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { FilePlus2, Search, SlidersHorizontal, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight, FilePlus2, Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
+const PAGE_SIZE = 10;
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,6 +109,11 @@ function TicketsPage() {
     });
     return sorted;
   }, [mine, q, status, type, assignee, sort]);
+
+  const [page, setPage] = useState(1);
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const safePage = Math.min(page, pages);
+  useEffect(() => setPage(1), [q, status, type, assignee, sort]);
 
   const filtersOn = q || status !== "todos" || type !== "todos" || assignee !== "todos";
   const open = (id: string | null) => navigate({ search: id ? { ticket: id } : {}, replace: !id });
@@ -233,11 +240,50 @@ function TicketsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-2.5">
-          {list.map((t) => (
-            <TicketRow key={t.id} ticket={t} onOpen={open} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-2.5">
+            {list.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE).map((t) => (
+              <TicketRow key={t.id} ticket={t} onOpen={open} />
+            ))}
+          </div>
+          {pages > 1 && (
+            <nav
+              aria-label="Paginación"
+              className="mt-6 flex items-center justify-between gap-3"
+            >
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={safePage === 1}
+                onClick={() => setPage(safePage - 1)}
+              >
+                <ChevronLeft /> Anterior
+              </Button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                  <Button
+                    key={n}
+                    variant={n === safePage ? "default" : "ghost"}
+                    size="sm"
+                    className="w-9 tabular"
+                    aria-current={n === safePage ? "page" : undefined}
+                    onClick={() => setPage(n)}
+                  >
+                    {n}
+                  </Button>
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={safePage === pages}
+                onClick={() => setPage(safePage + 1)}
+              >
+                Siguiente <ChevronRight />
+              </Button>
+            </nav>
+          )}
+        </>
       )}
 
       <TicketDetailDialog
