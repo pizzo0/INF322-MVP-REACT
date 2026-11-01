@@ -133,7 +133,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
                   <a href="https://usm.cl/sitios-academicos/" target="_blank" rel="noreferrer">
                     <span className="text-sm font-medium">Sitios Académicos</span>
-                  </Link>
+                  </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
                   <a href="https://usm.cl/sitios-administrativos/" target="_blank" rel="noreferrer">
