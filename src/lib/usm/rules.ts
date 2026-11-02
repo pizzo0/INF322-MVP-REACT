@@ -161,10 +161,10 @@ export function typeLabel(t: TicketType | null | undefined): string {
 
 export const STATUS_LABEL: Record<TicketStatus, string> = {
   nueva: "Nuevo",
-  asignada: "Asignada",
-  resuelta: "Resuelta",
-  rechazada: "Rechazada",
-  cerrada: "Cerrada",
+  asignada: "Asignado",
+  resuelta: "Resuelto",
+  rechazada: "Rechazado",
+  cerrada: "Cerrado",
 };
 
 export const STATUS_ORDER: TicketStatus[] = [
