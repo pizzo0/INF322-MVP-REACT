@@ -426,6 +426,7 @@ function LocationStep({
             ))}
           </SelectContent>
         </Select>
+        <p className="mt-1.5 text-xs text-muted-foreground">Sede o campus donde se encuentra el problema.</p>
         <FieldError>{error}</FieldError>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -440,6 +441,7 @@ function LocationStep({
             placeholder="Ej.: Edificio C"
             className="mt-1.5 h-11"
           />
+          <p className="mt-1.5 text-xs text-muted-foreground">Nombre o letra del edificio, si aplica.</p>
         </div>
         <div>
           <Label htmlFor="room">
@@ -452,6 +454,7 @@ function LocationStep({
             placeholder="Ej.: C-210"
             className="mt-1.5 h-11"
           />
+          <p className="mt-1.5 text-xs text-muted-foreground">Sala, oficina o espacio específico, si aplica.</p>
         </div>
       </div>
     </div>
@@ -514,6 +517,7 @@ function DetailsStep({
           placeholder="Resume el problema en una frase"
           className={cn("mt-1.5 h-11", errors.title && "border-destructive")}
         />
+        <p className="mt-1.5 text-xs text-muted-foreground">Un título breve y claro ayuda a clasificar tu ticket más rápido.</p>
         <FieldError>{errors.title}</FieldError>
       </div>
       <div>
@@ -527,6 +531,7 @@ function DetailsStep({
           placeholder="¿Qué ocurrió? ¿Desde cuándo? ¿A quiénes afecta? Incluye cualquier detalle que ayude a resolverlo."
           className={cn("mt-1.5 min-h-[140px]", errors.description && "border-destructive")}
         />
+        <p className="mt-1.5 text-xs text-muted-foreground">Describe el problema con el mayor detalle posible.</p>
         <FieldError>{errors.description}</FieldError>
       </div>
 
@@ -558,6 +563,7 @@ function DetailsStep({
               placeholder="nombre.apellido@usm.cl"
               className={cn("h-11", errors.onBehalfOf && "border-destructive")}
             />
+            <p className="mt-1.5 text-xs text-muted-foreground">Debe ser un correo institucional @usm.cl.</p>
             <FieldError>{errors.onBehalfOf}</FieldError>
           </div>
         )}
