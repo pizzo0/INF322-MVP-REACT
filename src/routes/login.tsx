@@ -66,79 +66,90 @@ function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-ink text-white py-3 px-5 text-[.78rem] flex flex-row-reverse">
+      <div className="flex flex-row-reverse items-center bg-ink text-white h-11 px-5 text-[.78rem]">
         <a href="https://usm.cl/" className="font-semibold">
           USM.cl
         </a>
       </div>
-      <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
-        <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
-          <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
-          <div className="relative flex flex-1 flex-col justify-between p-12">
-            {/* <Wordmark inverted /> */}
-            <div />
-            <div />
-            <div className="max-w-md">
-              {/* <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-ink-foreground/60">USM Denuncia</p> */}
-              <Wordmark inverted className="mb-5" />
-              <h1 className="font-display text-[44px] leading-[1.05]">
-                Comunica, solicita
-                <br />
-                <span className="font-bold"> y contribuye al cambio.</span>
-              </h1>
-              <p className="mt-5 text-ink-foreground/70">
-                Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes dentro
-                de la universidad, de manera fácil y desde cualquier dispositivo.
+      <div className="flex flex-col min-h-[calc(100dvh-2.75rem)]">
+        <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
+          <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
+            <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
+            <div className="relative flex flex-1 flex-col justify-between p-12">
+              {/* <Wordmark inverted /> */}
+              <div />
+              <div />
+              <div className="max-w-md">
+                {/* <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-ink-foreground/60">USM Denuncia</p> */}
+                <Wordmark inverted className="mb-5" />
+                <h1 className="font-display text-[44px] leading-[1.05]">
+                  Comunica, solicita
+                  <br />
+                  <span className="font-bold"> y contribuye al cambio.</span>
+                </h1>
+                <p className="mt-5 text-ink-foreground/70">
+                  Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes dentro
+                  de la universidad, de manera fácil y desde cualquier dispositivo.
+                </p>
+              </div>
+            </div>
+          </aside>
+          <main className="flex items-center justify-center bg-hero-gradient px-5 py-12 sm:px-10">
+            <div className="w-full max-w-[440px] animate-rise">
+              <div className="mb-10 lg:hidden">
+                <Wordmark />
+              </div>
+              <h2 className="text-3xl font-semibold">Ingresa a la plataforma</h2>
+              <p className="mt-2 text-muted-foreground">
+                Elige la forma de acceso que corresponda a tu perfil.
               </p>
-            </div>
-          </div>
-        </aside>
-
-        <main className="flex items-center justify-center bg-hero-gradient px-5 py-12 sm:px-10">
-          <div className="w-full max-w-[440px] animate-rise">
-            <div className="mb-10 lg:hidden">
-              <Wordmark />
-            </div>
-            <h2 className="text-3xl font-semibold">Ingresa a la plataforma</h2>
-            <p className="mt-2 text-muted-foreground">
-              Elige la forma de acceso que corresponda a tu perfil.
-            </p>
-
-            <div className="mt-8 grid gap-4">
-              <PortalCard
-                icon={<Users className="size-5" />}
-                title="Comunidad USM"
-                description="Estudiantes, docentes, funcionarios y toda persona con cuenta @usm.cl."
-              >
-                <Button
-                  variant="default"
-                  size="xl"
-                  className="w-full"
-                  onClick={microsoft}
-                  disabled={loading}
+              <div className="mt-8 grid gap-4">
+                <PortalCard
+                  icon={<Users className="size-5" />}
+                  title="Comunidad USM"
+                  description="Estudiantes, docentes, funcionarios y toda persona con cuenta @usm.cl."
                 >
-                  {loading ? <Loader2 className="animate-spin" /> : <MicrosoftLogo />}
-                  {loading ? "Conectando con Microsoft 365…" : "Continuar con Microsoft 365"}
-                </Button>
-              </PortalCard>
-              <PortalCard
-                icon={<Headset className="size-5" />}
-                title="Soporte y administración"
-                description="Equipos de atención y administradores de la plataforma."
-              >
-                <Button
-                  variant="secondary"
-                  size="xl"
-                  className="w-full"
-                  onClick={() => setManualOpen(true)}
+                  <Button
+                    variant="default"
+                    size="xl"
+                    className="w-full"
+                    onClick={microsoft}
+                    disabled={loading}
+                  >
+                    {loading ? <Loader2 className="animate-spin" /> : <MicrosoftLogo />}
+                    {loading ? "Conectando con Microsoft 365…" : "Continuar con Microsoft 365"}
+                  </Button>
+                </PortalCard>
+                <PortalCard
+                  icon={<Headset className="size-5" />}
+                  title="Soporte y administración"
+                  description="Equipos de atención y administradores de la plataforma."
                 >
-                  Ingresar manualmente
-                </Button>
-              </PortalCard>
+                  <Button
+                    variant="secondary"
+                    size="xl"
+                    className="w-full"
+                    onClick={() => setManualOpen(true)}
+                  >
+                    Ingresar manualmente
+                  </Button>
+                </PortalCard>
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
+      <footer className="bg-ink w-full">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 sm:px-6 w-full">
+          <span>
+            © Universidad Técnica Federico Santa María <br />
+            USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
+          </span>
+          <a className="underline" href="mailto:soporte.denuncia@usm.cl">
+            soporte.denuncia@usm.cl
+          </a>
+        </div>
+      </footer>
 
       <ManualLoginDialog open={manualOpen} onOpenChange={setManualOpen} />
     </div>

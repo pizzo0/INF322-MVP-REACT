@@ -157,12 +157,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
-      <footer className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6 bg-">
-        <span>
-          © Universidad Técnica Federico Santa María <br />
-          USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
-        </span>
-        <a className="hover:underline" href="mailto:soporte.denuncia@usm.cl">soporte.denuncia@usm.cl</a>
+      <footer className="bg-ink w-full">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 sm:px-6 w-full">
+          <span>
+            © Universidad Técnica Federico Santa María <br />
+            USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
+          </span>
+          <a className="underline" href="mailto:soporte.denuncia@usm.cl">
+            soporte.denuncia@usm.cl
+          </a>
+        </div>
       </footer>
     </div>
   );
