@@ -21,7 +21,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Wordmark } from "@/components/usm/brand";
 import { timeAgo } from "@/lib/usm/format";
-import { NAVIGATION, isNavGroup, type NavLinkItem } from "@/lib/usm/navigation";
+import { NAVIGATION, isNavGroup, type NavItem, type NavLinkItem } from "@/lib/usm/navigation";
 import {
   markAllNotificationsRead,
   markNotificationRead,
@@ -37,8 +37,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hydrated = useHydrated();
   const session = useSession();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
     if (hydrated && !session) navigate({ to: "/login", replace: true });
@@ -65,6 +63,37 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
+      <SiteHeader
+        items={NAVIGATION}
+        actions={
+          <>
+            <NotificationsMenu />
+            <ProfileMenu name={session.name} email={session.email} />
+          </>
+        }
+      />
+      <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
+      <footer className="mt-6 bg-surface w-full border-t border-border/70">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6 w-full gap-6">
+          <span>
+            © Universidad Técnica Federico Santa María <br />
+            USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
+          </span>
+          <a className="underline" href="mailto:soporte.denuncia@usm.cl">
+            soporte.denuncia@usm.cl
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+/** Shared top bar (desktop nav + mobile side menu), built from a navigation list. */
+export function SiteHeader({ items, actions }: { items: NavItem[]; actions?: ReactNode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  return (
+    <>
       <header className="sticky top-0 z-40 border-b border-border/70 bg-surface">
         <div className="mx-auto flex h-[70px] max-w-6xl items-center gap-2 px-4 sm:px-6">
           <Button
@@ -84,28 +113,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Wordmark />
           </Link>
-          <DesktopNav />
+          <DesktopNav items={items} />
 
-          <div className="ml-auto flex items-center gap-1.5">
-            <NotificationsMenu />
-            <ProfileMenu name={session.name} email={session.email} />
-          </div>
+          {actions && <div className="ml-auto flex items-center gap-1.5">{actions}</div>}
         </div>
       </header>
-      <MobileMenuPanel open={menuOpen} onClose={closeMenu} />
-      <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
-      <footer className="mt-6 bg-surface w-full border-t border-border/70">
-        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6 w-full gap-6">
-          <span>
-            © Universidad Técnica Federico Santa María <br />
-            USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
-          </span>
-          <a className="underline" href="mailto:soporte.denuncia@usm.cl">
-            soporte.denuncia@usm.cl
-          </a>
-        </div>
-      </footer>
-    </div>
+      <MobileMenuPanel items={items} open={menuOpen} onClose={closeMenu} />
+    </>
   );
 }
 
@@ -140,10 +154,10 @@ function NavAnchor({
   );
 }
 
-function DesktopNav() {
+function DesktopNav({ items }: { items: NavItem[] }) {
   return (
     <nav className="hidden h-full items-center gap-1 md:flex">
-      {NAVIGATION.map((item) =>
+      {items.map((item) =>
         isNavGroup(item) ? (
           <DropdownMenu key={item.label}>
             <DropdownMenuTrigger asChild>
@@ -198,7 +212,15 @@ function DesktopNav() {
 const mobileRow =
   "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-3 text-[15px] font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-primary";
 
-function MobileMenuPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
+function MobileMenuPanel({
+  items,
+  open,
+  onClose,
+}: {
+  items: NavItem[];
+  open: boolean;
+  onClose: () => void;
+}) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   // Close when the route changes.
@@ -223,7 +245,7 @@ function MobileMenuPanel({ open, onClose }: { open: boolean; onClose: () => void
     };
   }, [open, onClose]);
 
-  const activeGroups = NAVIGATION.filter(
+  const activeGroups = items.filter(
     (item) =>
       isNavGroup(item) &&
       item.children.some((c) => c.to && (c.to === "/" ? pathname === "/" : pathname.startsWith(c.to))),
@@ -254,7 +276,7 @@ function MobileMenuPanel({ open, onClose }: { open: boolean; onClose: () => void
         )}
       >
         <Accordion type="multiple" defaultValue={activeGroups} className="flex flex-col gap-0.5">
-          {NAVIGATION.map((item) =>
+          {items.map((item) =>
             isNavGroup(item) ? (
               <AccordionItem key={item.label} value={item.label} className="border-b-0">
                 <AccordionTrigger className={cn(mobileRow, "hover:no-underline")}>
