@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 /** Shared top bar (desktop nav + mobile side menu), built from a navigation list. */
-export function SiteHeader({ items, actions }: { items: NavItem[]; actions?: ReactNode }) {
+export function SiteHeader({ items, actions, brand }: { items: NavItem[]; actions?: ReactNode; brand?: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   return (
@@ -111,7 +111,7 @@ export function SiteHeader({ items, actions }: { items: NavItem[]; actions?: Rea
             to="/"
             className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring h-full flex justify-center items-center"
           >
-            <Wordmark />
+            {brand ?? <Wordmark />}
           </Link>
           <DesktopNav items={items} />
 
