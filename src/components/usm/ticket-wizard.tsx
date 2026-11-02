@@ -314,7 +314,7 @@ function TypeStep({
               onClick={() => onChange(t.id)}
               className="p-5"
             >
-              <span className="flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
                 <Icon className="size-5" />
               </span>
               <p className="mt-4 font-display text-lg font-semibold">{t.name}</p>
@@ -584,7 +584,7 @@ function DetailsStep({
             dragging && "border-primary bg-accent/50",
           )}
         >
-          <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
             <UploadCloud className="size-5" />
           </span>
           <p className="text-sm font-medium">
@@ -626,13 +626,13 @@ function AttachmentList({
   onRemove?: (id: string) => void;
 }) {
   return (
-    <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+    <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
       {items.map((a) => (
-        <li key={a.id} className="flex items-center gap-3 rounded-lg border bg-card p-2">
+        <li key={a.id} className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-2">
           {a.dataUrl ? (
-            <img src={a.dataUrl} alt={a.name} className="size-10 rounded-md object-cover" />
+            <img src={a.dataUrl} alt={a.name} className="size-10 shrink-0 rounded-md object-cover" />
           ) : (
-            <span className="flex size-10 items-center justify-center rounded-md bg-muted">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
               <FileText className="size-4 text-muted-foreground" />
             </span>
           )}
@@ -700,13 +700,14 @@ function SummaryStep({
         </Row>
         <Row label="Archivos" onEdit={() => onEdit("detalles")}>
           {draft.attachments.length ? (
-            <span className="flex flex-wrap gap-1.5">
+            <span className="flex min-w-0 flex-wrap gap-1.5">
               {draft.attachments.map((a) => (
                 <span
                   key={a.id}
-                  className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs"
+                  className="inline-flex min-w-0 max-w-full items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs"
+                  title={a.name}
                 >
-                  <Paperclip className="size-3" /> {a.name}
+                  <Paperclip className="size-3 shrink-0" /> <span className="truncate">{a.name}</span>
                 </span>
               ))}
             </span>

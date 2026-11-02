@@ -184,25 +184,25 @@ function DetailBody({
                 {ticket.attachments.length === 0 ? (
                   <p className="text-sm text-muted-foreground">Sin archivos adjuntos.</p>
                 ) : (
-                  <ul className="grid gap-2 sm:grid-cols-2">
+                  <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {ticket.attachments.map((a) => (
                       <li
                         key={a.id}
-                        className="flex items-center gap-3 rounded-lg border bg-card p-2"
+                        className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-2"
                       >
                         {a.dataUrl ? (
                           <img
                             src={a.dataUrl}
                             alt={a.name}
-                            className="size-10 rounded-md object-cover"
+                            className="size-10 shrink-0 rounded-md object-cover"
                           />
                         ) : (
-                          <span className="flex size-10 items-center justify-center rounded-md bg-muted">
+                          <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
                             <FileText className="size-4 text-muted-foreground" />
                           </span>
                         )}
-                        <span className="min-w-0">
-                          <span className="block truncate text-sm">{a.name}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm" title={a.name}>{a.name}</span>
                           <span className="text-xs text-muted-foreground">{bytes(a.size)}</span>
                         </span>
                       </li>
