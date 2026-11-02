@@ -67,3 +67,11 @@ docker compose down -v
 ## URLs
 
 - React: http://localhost:8080/
+
+### Pruebas Unitarias (Tests)
+Para ejecutar la suite de pruebas automatizadas con Vitest (32 tests que validan la lógica de negocio y las 3 metas de usuario):
+```bash
+npm run test
+# o si usas bun:
+bun test
+```
