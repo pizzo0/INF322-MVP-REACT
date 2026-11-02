@@ -73,7 +73,7 @@ function LoginPage() {
           USM.cl
         </a>
       </div> */}
-      <SiteHeader items={PUBLIC_NAVIGATION} />
+      <SiteHeader items={PUBLIC_NAVIGATION} brand={<img src="/logo-usm-blanco.svg" alt="Universidad Técnica Federico Santa María" className="h-9 w-auto" />} />
       <div className="flex flex-col min-h-[calc(100dvh-70px)]">
         <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
           <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
