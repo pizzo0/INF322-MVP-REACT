@@ -140,7 +140,7 @@ function LoginPage() {
         </div>
       </div>
       <footer className="bg-ink w-full">
-        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 sm:px-6 w-full">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 gap-6 sm:px-6 w-full">
           <span>
             © Universidad Técnica Federico Santa María <br />
             USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
