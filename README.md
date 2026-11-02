@@ -6,6 +6,7 @@ Proyecto construido con [Lovable](https://lovable.dev).
 
 - Alejandro Cáceres
 - Benjamin Caro
+- Cristobal Barahona
 
 
 > [!NOTE]
