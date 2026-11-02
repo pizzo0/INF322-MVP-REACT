@@ -59,6 +59,29 @@ docker compose down -v
 > [!IMPORTANT]  
 > En windows, el comando probablemente es `docker-compose`.
 
+### INSTRUCCIONES SIN DOCKER
+
+Si no quieres usar docker y prefieres usar directamente npm o bun, primero instala las dependencias:
+
+```bash
+npm install
+# o con bun
+bun install
+```
+
+y luego ya puedes correr el proyecto (no es necesario volver a instalar dependencias si quieres volver a correrlo):
+
+```bash
+npm run dev
+# o con bun
+bun run dev
+```
+
+> [!NOTE]
+> Si te da problemas npm al instalar dependencias, puedes usar `npm install --legacy-peer-deps`.
+>
+> Por eso igual recomendamos mas usar docker, o usar bun porque es el que usa lovable
+
 ## DEPENDENCIAS
 
 - [Docker](https://www.docker.com/)
