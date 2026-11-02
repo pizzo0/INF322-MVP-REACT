@@ -61,7 +61,7 @@ docker compose down -v
 ## DEPENDENCIAS
 
 - [Docker](https://www.docker.com/)
-- npm o bun (Opcional, es mas que nada para ver el codigo sin errores instalando las dependencias)
+- npm o bun (opcional, es mas que nada para ver el codigo sin errores instalando las dependencias)
 
 ## URLs
 
