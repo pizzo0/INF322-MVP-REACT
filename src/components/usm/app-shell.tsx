@@ -120,7 +120,7 @@ function NavAnchor({
   children: ReactNode;
   onNavigate?: () => void;
 }) {
-  if (item.href) {
+  if (item.to === undefined) {
     return (
       <a href={item.href} target="_blank" rel="noreferrer" className={className} onClick={onNavigate}>
         {children}
