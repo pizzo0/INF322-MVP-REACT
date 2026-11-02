@@ -263,6 +263,12 @@ function DetailBody({
                   <span className="block truncate text-xs text-muted-foreground">
                     {ticket.assignee.role}
                   </span>
+                  <a
+                    href={`mailto:${ticket.assignee.email}`}
+                    className="block truncate text-xs text-primary hover:underline"
+                  >
+                    {ticket.assignee.email}
+                  </a>
                 </span>
               </div>
             ) : (
