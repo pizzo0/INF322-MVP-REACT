@@ -1,17 +1,14 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import {
-  Bell,
-  CheckCheck,
-  ChevronDown,
-  FilePlus2,
-  Inbox,
-  LogOut,
-  Menu,
-  UserRound,
-} from "lucide-react";
-import { useEffect, type ReactNode } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Bell, CheckCheck, ChevronDown, ExternalLink, LogOut, Menu, UserRound, X } from "lucide-react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,9 +19,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Wordmark } from "@/components/usm/brand";
 import { timeAgo } from "@/lib/usm/format";
+import { NAVIGATION, isNavGroup, type NavLinkItem } from "@/lib/usm/navigation";
 import {
   markAllNotificationsRead,
   markNotificationRead,
@@ -40,6 +37,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hydrated = useHydrated();
   const session = useSession();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
     if (hydrated && !session) navigate({ to: "/login", replace: true });
@@ -68,87 +67,24 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border/70 bg-surface">
         <div className="mx-auto flex h-[70px] max-w-6xl items-center gap-2 px-4 sm:px-6">
-          <MobileNav />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </Button>
           <Link
             to="/"
             className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring h-full flex justify-center items-center"
           >
             <Wordmark />
           </Link>
-          <nav className="hidden items-center gap-1 md:flex h-full">
-            <Button variant="nav" size="sm" asChild>
-              <Link to="/" activeOptions={{ exact: true }} activeProps={{ "data-active": "true" }}>
-                Inicio
-              </Link>
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="nav"
-                  size="sm"
-                  className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground"
-                >
-                  Tickets
-                  <ChevronDown className="transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-60 p-1.5">
-                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <Link to="/tickets">
-                    <span className="flex size-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                      <Inbox className="size-4" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-medium">Mis tickets</span>
-                      <span className="text-xs text-muted-foreground">Estado y seguimiento</span>
-                    </span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <Link to="/tickets/nuevo">
-                    <span className="flex size-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                      <FilePlus2 className="size-4" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-medium">Crear ticket</span>
-                      <span className="text-xs text-muted-foreground">Reporta un problema</span>
-                    </span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="nav"
-                  size="sm"
-                  className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground"
-                >
-                  Sitios de Interés
-                  <ChevronDown className="transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-60 p-1.5">
-                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <a href="https://usm.cl/sitios-academicos/" target="_blank" rel="noreferrer">
-                    <span className="text-sm font-medium">Sitios Académicos</span>
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer gap-3 rounded-md p-2.5">
-                  <a href="https://usm.cl/sitios-administrativos/" target="_blank" rel="noreferrer">
-                    <span className="text-sm font-medium">Sitios Administrativos</span>
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Button variant="nav" size="sm" asChild>
-              <Link to="/contacto" activeProps={{ "data-active": "true" }}>
-                Contacto
-              </Link>
-            </Button>
-          </nav>
+          <DesktopNav />
 
           <div className="ml-auto flex items-center gap-1.5">
             <NotificationsMenu />
@@ -156,6 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+      <MobileMenuPanel open={menuOpen} onClose={closeMenu} />
       <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
       <footer className="mt-6 bg-ink w-full">
         <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 sm:px-6 w-full gap-6">
@@ -172,44 +109,186 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-function MobileNav() {
+function NavAnchor({
+  item,
+  className,
+  children,
+  onNavigate,
+}: {
+  item: NavLinkItem;
+  className?: string;
+  children: ReactNode;
+  onNavigate?: () => void;
+}) {
+  if (item.href) {
+    return (
+      <a href={item.href} target="_blank" rel="noreferrer" className={className} onClick={onNavigate}>
+        {children}
+      </a>
+    );
+  }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden" aria-label="Abrir menú">
-          <Menu />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-52">
-        <DropdownMenuItem asChild>
-          <Link to="/">Inicio</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel className="text-xs text-muted-foreground">Tickets</DropdownMenuLabel>
-        <DropdownMenuItem asChild>
-          <Link to="/tickets">Mis tickets</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/tickets/nuevo">Crear ticket</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel className="text-xs text-muted-foreground">Tickets</DropdownMenuLabel>
-        <DropdownMenuItem asChild>
-          <a href="https://usm.cl/sitios-academicos/" target="_blank" rel="noreferrer">
-            Sitios Académicos
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a href="https://usm.cl/sitios-administrativos/" target="_blank" rel="noreferrer">
-            Sitios Administrativos
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to="/contacto">Contacto</Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Link
+      to={item.to}
+      activeOptions={{ exact: !!item.exact }}
+      activeProps={{ "data-active": "true" }}
+      className={className}
+      onClick={onNavigate}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function DesktopNav() {
+  return (
+    <nav className="hidden h-full items-center gap-1 md:flex">
+      {NAVIGATION.map((item) =>
+        isNavGroup(item) ? (
+          <DropdownMenu key={item.label}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="nav"
+                size="sm"
+                className="gap-1 data-[state=open]:bg-accent data-[state=open]:text-foreground"
+              >
+                {item.label}
+                <ChevronDown className="transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-60 p-1.5">
+              {item.children.map((child) => {
+                const Icon = child.icon;
+                return (
+                  <DropdownMenuItem
+                    key={child.label}
+                    asChild
+                    className="cursor-pointer gap-3 rounded-md p-2.5"
+                  >
+                    <NavAnchor item={child}>
+                      {Icon && (
+                        <span className="flex size-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
+                          <Icon className="size-4" />
+                        </span>
+                      )}
+                      <span className="flex flex-col">
+                        <span className="text-sm font-medium">{child.label}</span>
+                        {child.description && (
+                          <span className="text-xs text-muted-foreground">
+                            {child.description}
+                          </span>
+                        )}
+                      </span>
+                    </NavAnchor>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button key={item.label} variant="nav" size="sm" asChild>
+            <NavAnchor item={item}>{item.label}</NavAnchor>
+          </Button>
+        ),
+      )}
+    </nav>
+  );
+}
+
+const mobileRow =
+  "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-3 text-[15px] font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-primary";
+
+function MobileMenuPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // Close when the route changes.
+  useEffect(() => {
+    onClose();
+  }, [pathname, onClose]);
+
+  // Lock page scroll, close on Escape and when the screen grows to desktop size.
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const mql = window.matchMedia("(min-width: 768px)");
+    const onMql = () => mql.matches && onClose();
+    window.addEventListener("keydown", onKey);
+    mql.addEventListener("change", onMql);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      mql.removeEventListener("change", onMql);
+    };
+  }, [open, onClose]);
+
+  const activeGroups = NAVIGATION.filter(
+    (item) =>
+      isNavGroup(item) &&
+      item.children.some((c) => c.to && (c.to === "/" ? pathname === "/" : pathname.startsWith(c.to))),
+  ).map((g) => g.label);
+
+  return (
+    <div
+      id="mobile-menu"
+      inert={!open}
+      aria-hidden={!open}
+      className={cn(
+        "fixed inset-x-0 bottom-0 top-[70px] z-30 transition-[visibility] duration-300 md:hidden",
+        open ? "visible" : "invisible",
+      )}
+    >
+      <div
+        onClick={onClose}
+        className={cn(
+          "absolute inset-0 bg-foreground/25 transition-opacity duration-300",
+          open ? "opacity-100" : "opacity-0",
+        )}
+      />
+      <nav
+        aria-label="Navegación principal"
+        className={cn(
+          "absolute inset-y-0 left-0 flex w-full max-w-xs flex-col overflow-y-auto border-r border-border/70 bg-surface p-3 shadow-xl transition-transform duration-300 ease-out",
+          open ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        <Accordion type="multiple" defaultValue={activeGroups} className="flex flex-col gap-0.5">
+          {NAVIGATION.map((item) =>
+            isNavGroup(item) ? (
+              <AccordionItem key={item.label} value={item.label} className="border-b-0">
+                <AccordionTrigger className={cn(mobileRow, "hover:no-underline")}>
+                  {item.label}
+                </AccordionTrigger>
+                <AccordionContent className="pb-1">
+                  <div className="ml-4 flex flex-col gap-0.5 border-l border-border pl-2">
+                    {item.children.map((child) => {
+                      const Icon = child.icon;
+                      return (
+                        <NavAnchor
+                          key={child.label}
+                          item={child}
+                          onNavigate={onClose}
+                          className={cn(mobileRow, "py-2.5 text-sm text-muted-foreground")}
+                        >
+                          {Icon && <Icon className="size-4 shrink-0" />}
+                          <span className="flex-1">{child.label}</span>
+                          {child.href && <ExternalLink className="size-3.5 opacity-60" />}
+                        </NavAnchor>
+                      );
+                    })}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ) : (
+              <NavAnchor key={item.label} item={item} onNavigate={onClose} className={mobileRow}>
+                {item.label}
+              </NavAnchor>
+            ),
+          )}
+        </Accordion>
+      </nav>
+    </div>
   );
 }
 
