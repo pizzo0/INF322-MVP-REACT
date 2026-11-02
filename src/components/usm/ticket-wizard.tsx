@@ -563,7 +563,7 @@ function DetailsStep({
               placeholder="nombre.apellido@usm.cl"
               className={cn("h-11", errors.onBehalfOf && "border-destructive")}
             />
-            <p className="mt-1.5 text-xs text-muted-foreground">Debe ser un correo institucional @usm.cl.</p>
+            <p className="mt-1.5 text-xs text-muted-foreground">Ingresa el correo de la persona que recibirá las actualizaciones.</p>
             <FieldError>{errors.onBehalfOf}</FieldError>
           </div>
         )}
