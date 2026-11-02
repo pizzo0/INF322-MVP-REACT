@@ -49,7 +49,7 @@ import { addComment, cancelTicket, deleteTicket, useSession, useTicket } from "@
 import type { Ticket, TimelineKind } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
 
-const KIND_LABEL: Record<TimelineKind, string> = {
+const INCIDENT_LABEL: Record<TimelineKind, string> = {
   creada: "Nueva incidencia",
   reabierta: "Ticket reabierto",
   asignada: "Incidencia asignada",
@@ -58,6 +58,20 @@ const KIND_LABEL: Record<TimelineKind, string> = {
   cerrada: "Cerrada",
   cancelada: "Cerrada por el usuario",
 };
+
+const REQUEST_LABEL: Record<TimelineKind, string> = {
+  creada: "Nuevo requerimiento",
+  reabierta: "Ticket reabierto",
+  asignada: "Requerimiento asignado",
+  resuelta: "Resuelto",
+  rechazada: "Rechazado",
+  cerrada: "Cerrado",
+  cancelada: "Cerrado por el usuario",
+};
+
+function kindLabels(t: Pick<Ticket, "type">): Record<TimelineKind, string> {
+  return t.type === "requerimiento" ? REQUEST_LABEL : INCIDENT_LABEL;
+}
 
 export function TicketDetailDialog({
   ticketId,
@@ -441,13 +455,18 @@ function ResolutionBox({ ticket }: { ticket: Ticket }) {
 
 function Timeline({ ticket }: { ticket: Ticket }) {
   const done = ticket.timeline;
+  const labels = kindLabels(ticket);
+  const isRequest = ticket.type === "requerimiento";
   const kinds = new Set(done.map((e) => e.kind));
   const pending: { kind: TimelineKind; label: string }[] = [];
   if (ticket.status !== "cerrada") {
-    if (!kinds.has("asignada")) pending.push({ kind: "asignada", label: "Incidencia asignada" });
+    if (!kinds.has("asignada")) pending.push({ kind: "asignada", label: labels.asignada });
     if (!kinds.has("resuelta") && !kinds.has("rechazada"))
-      pending.push({ kind: "resuelta", label: "Resuelta o rechazada" });
-    pending.push({ kind: "cerrada", label: "Cerrada" });
+      pending.push({
+        kind: "resuelta",
+        label: isRequest ? "Resuelto o rechazado" : "Resuelta o rechazada",
+      });
+    pending.push({ kind: "cerrada", label: labels.cerrada });
   }
   return (
     <ol className="relative ml-1">
@@ -458,7 +477,7 @@ function Timeline({ ticket }: { ticket: Ticket }) {
           )}
           <span className={cn(statusDotVariants({ kind: e.kind }), "relative mt-1.5 shrink-0")} />
           <div>
-            <p className="text-sm font-medium">{KIND_LABEL[e.kind]}</p>
+            <p className="text-sm font-medium">{labels[e.kind]}</p>
             {e.description && <p className="text-sm text-muted-foreground">{e.description}</p>}
             <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
               <CalendarClock className="size-3" /> {dateTime(e.at)}

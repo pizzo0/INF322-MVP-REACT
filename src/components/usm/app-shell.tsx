@@ -191,10 +191,14 @@ function MobileNav() {
         <DropdownMenuSeparator />
         <DropdownMenuLabel className="text-xs text-muted-foreground">Tickets</DropdownMenuLabel>
         <DropdownMenuItem asChild>
-          <Link to="https://usm.cl/sitios-academicos/">Sitios Académicos</Link>
+          <a href="https://usm.cl/sitios-academicos/" target="_blank" rel="noreferrer">
+            Sitios Académicos
+          </a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link to="https://usm.cl/sitios-administrativos/">Sitios Administrativos</Link>
+          <a href="https://usm.cl/sitios-administrativos/" target="_blank" rel="noreferrer">
+            Sitios Administrativos
+          </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>

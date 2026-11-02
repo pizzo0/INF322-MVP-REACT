@@ -7,19 +7,15 @@ import { typeLabel } from "@/lib/usm/rules";
 import type { Ticket } from "@/lib/usm/types";
 import { cn } from "@/lib/utils";
 
-/** Creation date, then assignment (replaced by the resolution once answered), then closing. */
+/** Only the date of the ticket's current stage: created, assigned, answered or closed. */
 function ticketDates(t: Ticket): { label: string; at: number }[] {
-  const out = [{ label: "Creado", at: t.createdAt }];
-  if (t.resolution) {
-    out.push({
-      label: t.resolution.outcome === "resuelta" ? "Resuelto" : "Rechazado",
-      at: t.resolution.at,
-    });
-  } else if (t.assignedAt) {
-    out.push({ label: "Asignado", at: t.assignedAt });
-  }
-  if (t.closedAt) out.push({ label: "Cerrado", at: t.closedAt });
-  return out;
+  if (t.status === "cerrada" && t.closedAt) return [{ label: "Cerrado", at: t.closedAt }];
+  if ((t.status === "resuelta" || t.status === "rechazada") && t.resolution)
+    return [
+      { label: t.resolution.outcome === "resuelta" ? "Resuelto" : "Rechazado", at: t.resolution.at },
+    ];
+  if (t.status === "asignada" && t.assignedAt) return [{ label: "Asignado", at: t.assignedAt }];
+  return [{ label: "Creado", at: t.createdAt }];
 }
 
 
