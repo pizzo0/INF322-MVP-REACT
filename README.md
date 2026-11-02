@@ -9,6 +9,7 @@ This project was built with [Lovable](https://lovable.dev).
   - No es necesario, es mas que nada para ver el codigo sin errores instalando las dependencias
 ## Integrantes
 -Benjamin Caro
+
 -Alejandro Caceres
 ## URLs
 
