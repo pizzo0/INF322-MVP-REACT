@@ -8,16 +8,21 @@ import {
   advanceTicket,
   applyDraft,
   canCancel,
+  canComment,
   canDelete,
   canReopen,
+  diffDraft,
   draftFromTicket,
   editScope,
   emptyDraft,
+  isValidEmail,
   selectCategory,
   selectType,
+  simulatedOutcome,
   ticketCode,
+  validateDraft,
 } from "./rules";
-import type { Ticket } from "./types";
+import type { Ticket, TicketDraft } from "./types";
 
 function makeTicket(over: Partial<Ticket> = {}): Ticket {
   return {
@@ -120,5 +125,116 @@ describe("simulated workflow timing", () => {
     const end = ASSIGN_AFTER_MS + RESOLVE_AFTER_MS + CLOSE_AFTER_MS;
     expect(advanceTicket(makeTicket(), end - 1).ticket.status).not.toBe("cerrada");
     expect(advanceTicket(makeTicket(), end).ticket.status).toBe("cerrada");
+  });
+});
+
+describe("draft validation (Meta 1: Creación guiada)", () => {
+  function validDraft(): TicketDraft {
+    return {
+      type: "incidencia",
+      categoryId: "inc-aula",
+      location: { campus: "Campus San Joaquín", building: "Edificio F", room: "F203" },
+      title: "Luz del fondo no funciona",
+      description: "La luminaria del fondo de la sala parpadea y no enciende.",
+      onBehalfOf: "",
+      attachments: [],
+    };
+  }
+
+  it("accepts a complete, valid draft without errors", () => {
+    expect(validateDraft(validDraft())).toEqual({});
+  });
+
+  it("requires a problem type", () => {
+    const d = { ...validDraft(), type: null };
+    expect(validateDraft(d).type).toBe("Selecciona el tipo de problema.");
+  });
+
+  it("requires a valid category matching the type", () => {
+    const d = { ...validDraft(), categoryId: null };
+    expect(validateDraft(d).categoryId).toBe("Selecciona una categoría.");
+  });
+
+  it("requires a campus location", () => {
+    const d = { ...validDraft(), location: { campus: "   ", building: "", room: "" } };
+    expect(validateDraft(d).campus).toBe("El campus es obligatorio.");
+  });
+
+  it("enforces minimum title length of 5 characters", () => {
+    const d = { ...validDraft(), title: "Falla" };
+    expect(validateDraft(d).title).toBeUndefined();
+    const short = { ...validDraft(), title: "Luz" };
+    expect(validateDraft(short).title).toBe("El título debe tener al menos 5 caracteres.");
+  });
+
+  it("enforces minimum description length of 10 characters", () => {
+    const short = { ...validDraft(), description: "No sirve" };
+    expect(validateDraft(short).description).toBe(
+      "Describe el problema con al menos 10 caracteres.",
+    );
+  });
+
+  it("validates onBehalfOf email syntax when provided", () => {
+    const validEmail = { ...validDraft(), onBehalfOf: "profesor@usm.cl" };
+    expect(validateDraft(validEmail).onBehalfOf).toBeUndefined();
+
+    const invalidEmail = { ...validDraft(), onBehalfOf: "correo-invalido" };
+    expect(validateDraft(invalidEmail).onBehalfOf).toBe("Ingresa un correo válido.");
+  });
+});
+
+describe("draft diff and audit history (Meta 2: Edición)", () => {
+  it("detects changes in title and description", () => {
+    const before = draftFromTicket(makeTicket());
+    const after = {
+      ...before,
+      title: "Título modificado sala F202",
+      description: "Descripción corregida con más detalles",
+    };
+    const diff = diffDraft(before, after, 1000);
+    expect(diff).toHaveLength(2);
+    expect(diff.map((e) => e.field)).toEqual(["Título", "Descripción"]);
+    expect(diff.find((e) => e.field === "Título")?.to).toBe("Título modificado sala F202");
+  });
+
+  it("detects changes in location", () => {
+    const before = draftFromTicket(makeTicket());
+    const after = {
+      ...before,
+      location: { campus: "Campus San Joaquín", building: "Edificio F", room: "F202" },
+    };
+    const diff = diffDraft(before, after, 1000);
+    const locEntry = diff.find((e) => e.field === "Ubicación");
+    expect(locEntry).toBeDefined();
+    expect(locEntry?.to).toBe("Campus San Joaquín · Edificio F · F202");
+  });
+
+  it("returns an empty diff when nothing changed", () => {
+    const draft = draftFromTicket(makeTicket());
+    expect(diffDraft(draft, draft, 1000)).toHaveLength(0);
+  });
+});
+
+describe("comments and permissions (Meta 3: Ciclo de vida)", () => {
+  it("allows comments for active tickets and forbids them when closed", () => {
+    expect(canComment(makeTicket({ status: "nueva" }))).toBe(true);
+    expect(canComment(makeTicket({ status: "asignada" }))).toBe(true);
+    expect(canComment(makeTicket({ status: "resuelta" }))).toBe(true);
+    expect(canComment(makeTicket({ status: "cerrada" }))).toBe(false);
+  });
+
+  it("determines predictable simulated outcomes based on seq", () => {
+    expect(simulatedOutcome(1040)).toBe("rechazada");
+    expect(simulatedOutcome(1041)).toBe("resuelta");
+    expect(simulatedOutcome(1042)).toBe("resuelta");
+    expect(simulatedOutcome(1043)).toBe("resuelta");
+    expect(simulatedOutcome(1044)).toBe("rechazada");
+  });
+
+  it("validates email helper", () => {
+    expect(isValidEmail("alumno@usm.cl")).toBe(true);
+    expect(isValidEmail("docente@sansano.usm.cl")).toBe(true);
+    expect(isValidEmail("sin-arroba.cl")).toBe(false);
+    expect(isValidEmail("")).toBe(false);
   });
 });
