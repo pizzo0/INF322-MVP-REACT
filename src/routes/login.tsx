@@ -73,9 +73,19 @@ function LoginPage() {
           USM.cl
         </a>
       </div> */}
-      <SiteHeader items={PUBLIC_NAVIGATION} brand={<img src="/logo-usm-blanco.svg" alt="Universidad Técnica Federico Santa María" className="h-9 w-auto" />} />
-      <div className="flex flex-col min-h-[calc(100dvh-70px)]">
-        <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
+      <SiteHeader
+        items={PUBLIC_NAVIGATION}
+        brand={
+          <img
+            src="/logo-usm.svg"
+            alt="Universidad Técnica Federico Santa María"
+            className="h-12 w-auto"
+          />
+        }
+        brandLinkTo="https://usm.cl/"
+      />
+      <div className="flex flex-col items-center min-h-[calc(100dvh-70px)] mx-8">
+        <div className="w-full max-w-6xl rounded-xl border overflow-hidden my-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
           <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
             <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
             <div className="relative flex flex-1 flex-col justify-between p-12">
@@ -83,7 +93,6 @@ function LoginPage() {
               <div />
               <div />
               <div className="max-w-md">
-                {/* <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-ink-foreground/60">USM Denuncia</p> */}
                 <Wordmark inverted className="mb-5" />
                 <h1 className="font-display text-[44px] leading-[1.05]">
                   Comunica, solicita
@@ -91,14 +100,17 @@ function LoginPage() {
                   <span className="font-bold"> y contribuye al cambio.</span>
                 </h1>
                 <p className="mt-5 text-ink-foreground/70">
-                  Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes dentro
-                  de la universidad, de manera fácil y desde cualquier dispositivo.
+                  Informa problemas, realiza requerimientos y haz seguimiento a tus solicitudes
+                  dentro de la universidad, de manera fácil y desde cualquier dispositivo.
                 </p>
               </div>
             </div>
           </aside>
-          <main className="flex items-center justify-center bg-hero-gradient px-5 py-12 sm:px-10">
+          <main className="flex items-center justify-center bg-hero-gradient px-5 py-8 sm:px-10">
             <div className="w-full max-w-[440px] animate-rise">
+              <div className="mb-8 lg:hidden">
+                <Wordmark />
+              </div>
               <h2 className="text-3xl font-semibold">Ingresa a la plataforma</h2>
               <p className="mt-2 text-muted-foreground">
                 Elige la forma de acceso que corresponda a tu perfil.
@@ -139,8 +151,8 @@ function LoginPage() {
           </main>
         </div>
       </div>
-      <footer className="bg-ink w-full border-t border-border/70">
-        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 gap-6 sm:px-6 w-full">
+      <footer className="bg-surface w-full border-t border-border/70">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground gap-6 sm:px-6 w-full">
           <span>
             © Universidad Técnica Federico Santa María <br />
             USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria

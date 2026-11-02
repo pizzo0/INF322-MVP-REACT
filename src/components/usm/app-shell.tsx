@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 /** Shared top bar (desktop nav + mobile side menu), built from a navigation list. */
-export function SiteHeader({ items, actions, brand }: { items: NavItem[]; actions?: ReactNode; brand?: ReactNode }) {
+export function SiteHeader({ items, actions, brand, brandLinkTo }: { items: NavItem[]; actions?: ReactNode; brand?: ReactNode; brandLinkTo?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   return (
@@ -108,7 +108,7 @@ export function SiteHeader({ items, actions, brand }: { items: NavItem[]; action
             {menuOpen ? <X /> : <Menu />}
           </Button>
           <Link
-            to="/"
+            to={brandLinkTo ?? "/"}
             className="mr-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring h-full flex justify-center items-center"
           >
             {brand ?? <Wordmark />}
@@ -180,11 +180,7 @@ function DesktopNav({ items }: { items: NavItem[] }) {
                     className="cursor-pointer gap-3 rounded-md p-2.5"
                   >
                     <NavAnchor item={child}>
-                      {Icon && (
-                        <span className="flex size-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                          <Icon className="size-4" />
-                        </span>
-                      )}
+                      {Icon && <Icon className="size-4" />}
                       <span className="flex flex-col">
                         <span className="text-sm font-medium">{child.label}</span>
                         {child.description && (
@@ -295,7 +291,6 @@ function MobileMenuPanel({
                         >
                           {Icon && <Icon className="size-4 shrink-0" />}
                           <span className="flex-1">{child.label}</span>
-                          {child.href && <ExternalLink className="size-3.5 opacity-60" />}
                         </NavAnchor>
                       );
                     })}

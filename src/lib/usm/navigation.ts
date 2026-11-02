@@ -29,10 +29,9 @@ export const NAVIGATION: NavItem[] = [
   {
     label: "Tickets",
     children: [
-      { label: "Mis tickets", description: "Estado y seguimiento", icon: Inbox, to: "/tickets" },
+      { label: "Mis tickets", icon: Inbox, to: "/tickets" },
       {
         label: "Crear ticket",
-        description: "Reporta un problema",
         icon: FilePlus2,
         to: "/tickets/nuevo",
       },
@@ -50,5 +49,5 @@ export const NAVIGATION: NavItem[] = [
 
 /** Navigation shown to signed-out visitors (login page). */
 export const PUBLIC_NAVIGATION: NavItem[] = NAVIGATION.filter(
-  (item) => item.label === "Inicio" || item.label === "Sitios de Interés",
+  (item) => item.label === "Sitios de Interés",
 );
