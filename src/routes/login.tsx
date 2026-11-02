@@ -66,12 +66,12 @@ function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex flex-row-reverse items-center bg-ink text-white h-11 px-5 text-[.78rem]">
+      {/* <div className="flex flex-row-reverse items-center bg-ink text-white h-11 px-5 text-[.78rem]">
         <a href="https://usm.cl/" className="font-semibold">
           USM.cl
         </a>
-      </div>
-      <div className="flex flex-col min-h-[calc(100dvh-2.75rem)]">
+      </div> */}
+      <div className="flex flex-col min-h-[100dvh]">
         <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
           <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
             <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
@@ -139,7 +139,7 @@ function LoginPage() {
           </main>
         </div>
       </div>
-      <footer className="bg-ink w-full">
+      <footer className="bg-ink w-full border-t border-border/70">
         <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 gap-6 sm:px-6 w-full">
           <span>
             © Universidad Técnica Federico Santa María <br />

@@ -54,7 +54,7 @@ function Home() {
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             <Link
               to="/tickets/nuevo"
-              className="group flex flex-col relative overflow-hidden rounded-2xl bg-ink-gradient p-6 text-ink-foreground shadow-lift transition-transform duration-200 hover:-translate-y-0.5"
+              className="group flex flex-col overflow-hidden rounded-2xl bg-ink-gradient p-6 text-ink-foreground shadow-lift transition-transform duration-200 hover:-translate-y-0.5"
             >
               <span className="flex size-11 items-center justify-center rounded-xl bg-ink-foreground/10">
                 <FilePlus2 className="size-5" />
@@ -70,12 +70,12 @@ function Home() {
             </Link>
             <Link
               to="/tickets"
-              className="group rounded-2xl border bg-card p-6 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift"
+              className="group flex flex-col rounded-2xl border bg-card p-6 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift"
             >
               <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
                 <Inbox className="size-5" />
               </span>
-              <p className="mt-6 font-display text-2xl font-semibold">Mis tickets</p>
+              <p className="mt-auto pt-6 font-display text-2xl font-semibold">Mis tickets</p>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <Stat value={active} label="Asignados" tone="text-status-assigned" />
                 <Stat value={answered} label="Resueltos" tone="text-status-resolved" />

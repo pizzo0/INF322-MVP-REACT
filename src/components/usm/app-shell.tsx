@@ -94,8 +94,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       </header>
       <MobileMenuPanel open={menuOpen} onClose={closeMenu} />
       <main className="min-h-[calc(100dvh-70px)] [&>div:first-child]:w-full animate-rise flex flex-col">{children}</main>
-      <footer className="mt-6 bg-ink w-full">
-        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-ink-foreground/90 sm:px-6 w-full gap-6">
+      <footer className="mt-6 bg-surface w-full border-t border-border/70">
+        <div className="flex justify-between items-center mx-auto max-w-6xl px-4 py-10 text-xs text-muted-foreground sm:px-6 w-full gap-6">
           <span>
             © Universidad Técnica Federico Santa María <br />
             USM Denuncia · Plataforma de reportes y solicitudes de la comunidad universitaria
