@@ -22,7 +22,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SiteHeader } from "@/components/usm/app-shell";
 import { MicrosoftLogo, Wordmark } from "@/components/usm/brand";
+import { PUBLIC_NAVIGATION } from "@/lib/usm/navigation";
 import { signInWithMicrosoft, useHydrated, useSession } from "@/lib/usm/store";
 
 export const Route = createFileRoute("/login")({
@@ -71,7 +73,8 @@ function LoginPage() {
           USM.cl
         </a>
       </div> */}
-      <div className="flex flex-col min-h-[100dvh]">
+      <SiteHeader items={PUBLIC_NAVIGATION} />
+      <div className="flex flex-col min-h-[calc(100dvh-70px)]">
         <div className="rounded-xl border overflow-hidden m-8 flex-1 grid lg:grid-cols-[1.05fr_1fr]">
           <aside className="relative hidden overflow-hidden bg-ink-gradient text-ink-foreground lg:flex lg:flex-col">
             <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_20%,black,transparent_70%)]" />
@@ -96,9 +99,6 @@ function LoginPage() {
           </aside>
           <main className="flex items-center justify-center bg-hero-gradient px-5 py-12 sm:px-10">
             <div className="w-full max-w-[440px] animate-rise">
-              <div className="mb-10 lg:hidden">
-                <Wordmark />
-              </div>
               <h2 className="text-3xl font-semibold">Ingresa a la plataforma</h2>
               <p className="mt-2 text-muted-foreground">
                 Elige la forma de acceso que corresponda a tu perfil.
