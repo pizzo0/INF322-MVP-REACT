@@ -47,3 +47,8 @@ export const NAVIGATION: NavItem[] = [
   },
   { label: "Contacto", to: "/contacto" },
 ];
+
+/** Navigation shown to signed-out visitors (login page). */
+export const PUBLIC_NAVIGATION: NavItem[] = NAVIGATION.filter(
+  (item) => item.label === "Inicio" || item.label === "Sitios de Interés",
+);
