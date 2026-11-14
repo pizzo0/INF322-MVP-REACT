@@ -7,6 +7,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    basepath: "/INF322-MVP-REACT",
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
