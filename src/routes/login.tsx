@@ -77,7 +77,7 @@ function LoginPage() {
         items={PUBLIC_NAVIGATION}
         brand={
           <img
-            src="/logo-usm.svg"
+            src={`${import.meta.env.BASE_URL}logo-usm.svg`}
             alt="Universidad Técnica Federico Santa María"
             className="h-12 w-auto"
           />

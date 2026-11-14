@@ -37,7 +37,7 @@ function LoginPage() {
 			/* @__PURE__ */ jsx(SiteHeader, {
 				items: PUBLIC_NAVIGATION,
 				brand: /* @__PURE__ */ jsx("img", {
-					src: "/logo-usm.svg",
+					src: `/INF322-MVP-REACT/logo-usm.svg`,
 					alt: "Universidad Técnica Federico Santa María",
 					className: "h-12 w-auto"
 				}),

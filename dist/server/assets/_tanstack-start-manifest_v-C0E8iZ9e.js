@@ -11,7 +11,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/tickets/$ticketId/editar"
 		],
 		preloads: [
-			"/INF322-MVP-REACT/assets/index-CBYPj6KF.js",
+			"/INF322-MVP-REACT/assets/index-CCjteLMv.js",
 			"/INF322-MVP-REACT/assets/rolldown-runtime-CbXtAM7H.js",
 			"/INF322-MVP-REACT/assets/dist-C_hWhGx9.js",
 			"/INF322-MVP-REACT/assets/preload-helper-CVQpzil7.js",
@@ -21,7 +21,7 @@ var tsrStartManifest = () => ({ routes: {
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/INF322-MVP-REACT/assets/index-CBYPj6KF.js"
+			src: "/INF322-MVP-REACT/assets/index-CCjteLMv.js"
 		} }]
 	},
 	"/": {
@@ -43,7 +43,7 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/mnt/c/Users/cacer/dev/INF322/INF322-MVP-REACT/src/routes/login.tsx",
 		children: void 0,
 		preloads: [
-			"/INF322-MVP-REACT/assets/login-CnLy-v7q.js",
+			"/INF322-MVP-REACT/assets/login-DPv4jswK.js",
 			"/INF322-MVP-REACT/assets/app-shell-eChlyvtr.js",
 			"/INF322-MVP-REACT/assets/dialog-CBSEsNjx.js",
 			"/INF322-MVP-REACT/assets/input-Df1qZKGr.js",

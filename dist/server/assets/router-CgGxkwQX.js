@@ -174,7 +174,7 @@ var Route$4 = createRootRouteWithContext()({
 			},
 			{
 				rel: "icon",
-				href: "/escudo.ico",
+				href: `/INF322-MVP-REACT/escudo.ico`,
 				type: "image/x-icon"
 			}
 		]
@@ -257,7 +257,7 @@ var Route$2 = createFileRoute("/contacto")({
 });
 //#endregion
 //#region src/routes/login.tsx
-var $$splitComponentImporter$1 = () => import("./login-DCR27Ds1.js");
+var $$splitComponentImporter$1 = () => import("./login-C4Wq118D.js");
 var Route$1 = createFileRoute("/login")({
 	head: () => ({ meta: [
 		{ title: "USM Denuncia" },
