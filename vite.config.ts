@@ -14,6 +14,7 @@ export default defineConfig({
   },
 
   vite: {
+    base: "/INF322-MVP-REACT/",
     server: {
       watch: {
         usePolling: true,
